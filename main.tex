@@ -1,0 +1,46 @@
+\documentclass{article}
+
+\usepackage{amssymb,amsmath,amsthm}
+\usepackage{cmll}
+\usepackage{txfonts}
+\usepackage{graphicx}
+\usepackage{stmaryrd}
+%%\usepackage{todonotes}
+\usepackage{mathtools}
+\usepackage{amsmath}
+\usepackage{mathpartir}
+\usepackage{hyperref}
+\usepackage{mdframed}
+\usepackage[barr]{xy}
+\usepackage{comment}
+\usepackage{graphicx}
+\usepackage[inline]{enumitem}
+\setlist{noitemsep}
+
+\newtheorem{theorem}{Theorem}
+\newtheorem{lemma}[theorem]{Lemma}
+\newtheorem{corollary}[theorem]{Corollary}
+\newtheorem{definition}[theorem]{Definition}
+\newtheorem{proposition}[theorem]{Proposition}
+\newtheorem{example}[theorem]{Example}
+
+\title{Notes on Petri Nets and Attack Trees}
+
+\author{Aubrey Bryant and Harley Eades III}
+
+\begin{document}
+\maketitle 
+
+\begin{abstract}
+  TODO
+\end{abstract}
+\section{Petri Nets}\label {sec:petri-nets}
+\input{petri}
+%section petri nets (end)
+\section{Notes on Attack Trees and Petri Nets}
+\input{NotesAttackTreesPetriNets}
+%section notes on attack trees and petri nets (end)
+\nocite{*}
+\bibliographystyle{plain}
+\bibliography{references}
+\end{document}

@@ -1,0 +1,88 @@
+\begin{definition}
+\label{def:Petri-net}
+Petri net: a 5-tuple $(P, T, F, V, m_0)$ 
+
+P = a set of places; like states in automata; denoted by circles or vertices of one color\\
+T = a set of transitions; denoted by rectangles or bars\\
+F = the “flow relation”, a set of arcs; denoted by directional lines\\
+V = multiplicity function mapping the weight of the arcs (this indicates how many tokens are needed to activate the arc)\\
+$M_0$ = the initial marking that assigns a natural number to each place, roughly like resources that “flow through” the net\\
+	tokens: a discrete number of marks denoted as dots inside the places \\
+	these track the execution of the petri net - show what 'instruction' it is on, or what state it is in\\
+	
+\noindent Restrictions: \\
+P and T are finite sets. $P\cap T = \emptyset$   and $P\cup T \neq \emptyset.$\\
+F is a relation between P and T: $ F \subseteq (P \times T) \cup (T \times P)$\\
+V :$ F \rightarrow N+ $\\
+\end {definition}
+Firing of a petri net: this captures the dynamic behavior of the petri net\\
+Firing enables the transition from the initial marking to successor markings based on the firing rules\\
+Pre-place: an input place; a place with an arc to a transition; denoted $(\ldotp , t) or  \cdot t$\\
+If a pre-place has at least as many marks as the output arc's weight, then it is fulfilled and the transition the arc points to is activated, causing the transition to output to the post-place. However, the transition outputs the weight of its output arcs. Output $\ne$ Input\\
+Post-place: an output place; a place with an arc from a transition; denoted $(t, \ldotp ) or t \cdot $ \\
+A firing sequence from a place is a trace through a sequence of transitions\\
+A reachable marking from one place to another means that there is a firing sequence from the first place to the last\\
+The set RN := RN($m_0$) is the state space, the set of all reachable states in the petri net\\
+This holds information about what events are possible and impossible in the petri net\\
+Bounded: a petri net is bounded if its state space is finite \smallskip\\
+
+A k-safe petri net is one in which, in every marking reachable from the initial marking, there are at most k tokens.\\
+In classic petri nets, aka 1-safe petri nets, places can have at most one mark\\
+ 
+\subsection{Pomset/Petri Net equivalence}
+\label{subsec:pomset/petri_net_equivalence}
+
+Since pomsets do not have a way to account for tokens or weighted arcs, we need to focus on 1-safe petri nets ; Best and Wimmel (2000) have a method for converting k-safe petri nets to 1-safe petri nets.\\
+
+The arcs of a pomset need to represent the direct predecessor relation only.\smallskip\\
+
+Best and Wimmel (2000) explain that a pomset is an abstraction from a process, which is based on an occurence net: \\
+A process is a tuple (B, E, F, r) where r: $(B \cup E) \rightarrow (S \cup T)$ and:\\
+(B, E, F) is an occurrence net:\\
+An occurrence net is a 1-safe petri net with some additional restrictions. (Hayman and Winskel 2008)\\
+B is a set of conditions s.t. $(r(B) \subseteq  S$ ; these describe the state of a place\\
+(To 'unfold' a net is to make each implicit option or path explicit; to draw each path as a separate thread. Thus, conditions describe the state of a place, or 'what's inside' the place).\\
+E is a set of events s.t. $(r(E) \subseteq  T$ \\
+F is a function which can be viewed as a relation on $(B \times E) \cup (E \times B)$ - describes ordering of conditions and events\\
+ minO = ${b \in B | F(., b) = \emptyset }$ and maxO = ${b \in B | F(b,.) = \emptyset }$\\
+Conditions for an O-net:\\
+1) $\forall x \in B \cup E$, the set F(x) is a singleton. (this means there is only one path from a b to an e or e to b.)\\
+2) The relation F is acyclic - the transitive closure of F is irreflexive\\
+3) $\forall b \in B: |F(. , b)| \leq 1 and |F(b, .)| \leq 1. $ There is one or fewer paths into or out of a b. Hayman and Winskel (2008) describe this as F being a "flow relation describing how places and transitions are connected" and F not being a multirelation.\\
+(Best and Wimmel 2000)\\
+
+Hickmott et al. (2007) describe the process of unfolding a Petri net into an occurrence net. (An occurrence is the same thing as a firing of the net.)\\
+
+The occurrence net makes explicit all the possible runs of the PT net from the initial marking.\\
+
+The particular occurrences of the places and transitions of a PT-net are represented as conditions and events in O-nets. \\ 
+
+
+Unfolding makes the net simpler by making multiple instances of places as needed, hiding unreachable places, and eliminating cycles and backward conflicts. A backward conflict occurs when two transitions output to the same place, making it impossible to know which one actually fired. Eliminating backward conflict gives the action set post-uniqueness, meaning that we know the precise set of actions that brought about a certain marking (i.e. state of affairs). Forward conflict happens when two transitions are enabled but only one can fire (because two transitions branch off of one place), a situation that results in the same ambiguity observed with backward conflict. \\
+
+(Unfolding of a Petri-net can often be infinite, but at some point the unfolding can be stopped without loss of information. This stopped unfolding is called a complete finite prefix.)\\
+
+Configurations represent possible partial runs of the Petri net, and meet two conditions:\\
+1) Causally closed: if any event is in the configuration, so are its ancestors: $ \forall e’ \leq e, e \in C \implies e’ \in C.$\\
+2) No forward conflict.\\
+Additionally, configurations can be associated with a marking by identifying the marking that will result once that configuration is fired (starting from the initial marking).\\
+
+Unfolding:\\
+
+A homomorphism from the O-net to the Petri-net maps conditions B and events E onto places P and transitions T.\\
+One place can be mapped into multiple conditions, to meet the conditions of configurations above and show different possible runs.\\ 
+
+Transitions that are unreachable under any possible marking of the PT-net disappear in the O-net, bc they will never occur.\\
+
+The O-net starts by mapping conditions with empty presets onto places initially marked in the PT-net.\\
+
+Then, each possible firing is explored, and each possible run is added as a set of conditions and events, until cut-off events are reached in each thread. (Cut off events are those past which no new information is added, and thus represent the limit of the complete finite prefix).\\
+
+The unfolding duplicates nodes as needed to guarantee post-uniqueness - meaning each condition will have a unique event as a predecessor, no sharing of predecessors. \\
+
+
+Best et al. (2007) explain that the pomset language of $(N, \lambda)$ is "the set of $\lambda$-images of finite processes of N." Where N is a net and $\lambda$ is a transition labeling.
+
+  
+% subsection pomset/petri_net_equivalence (end)
+

@@ -47,7 +47,7 @@ A monoid homomorphism between two monoids $(M_1, \oplus_1, 0_1)$ and $(M_2, \opl
  is a function $f: M_1 \rightarrow M_2$ such that:\\
 \begin{itemize}
 \setlength\itemsep{.1em}
-\item $f(a_1 \oplus_1 a_2) = fa_1 \oplus fa_2$
+\item $f(a_1 \oplus_1 a_2) = f(a_1) \oplus f(a_2)$
 \item $f 0_1 = 0_2$
 \end{itemize}
 \end{definition}
@@ -58,12 +58,13 @@ A Petri Net morphism between two Petri nets $(T_1, S_1^\oplus)$ and $(T_2, S_2^\
 \end{definition}
 Thus, take as objects Petri nets $(T, S^\oplus)$ and as morphisms Petri net morphisms. This defines a category Petri.\\
 \begin{lemma}
-Suppose we have two Petri nets, $(S_1, \oplus, 0)$ and $(S_2, \oplus, 0)$. The product of their free commutative monoids is isomorphic to the free commutative monoid of their disjoint union. In symbols,
+Suppose we have two Petri nets, $(S_1, \oplus, 0)$ and $(S_2, \oplus, 0)$.\\ 
 \[(S_1 ^\oplus \times S_2 ^\oplus) \cong (S_1 + S_2)^\oplus\]
-To show this, we need to define two homomorphisms between them, which we will call F and G.
 \begin{proof}
+To show this, we need to define two homomorphisms between them, which we will call F and G.\\
+\bigskip\\
 It is important to note that the $\oplus$ operation is commutative. This commutativity allows the elements of the resulting free commutative monoid (FCM) to be rearranged, which will help us in our proof by allowing FCMs to be sorted in the following way:\bigskip\\
-Consider an arbitrary $s \in (S_1 + S_2)^\oplus$. Since the generator is the disjoint union of $S_1$ and $S_2$, the elements of $s$ are drawn from those two sets, but are not grouped according to their origin set. Using commutativity, we can move all $y_i \in S_1$ to the front, and all $z_j \in S_2$ to the end. $s$ then has the form $(\oplus_i y_i) \oplus (\oplus_j z_j)$, where the elements are grouped according to their origin set. Any element of $(S_1 + S_2)^\oplus$ can be similarly sorted. For the purposes of this proof, assume that all such elements are so sorted.\bigskip \\
+Consider an arbitrary $s \in (S_1 + S_2)^\oplus$. Since the generator is the disjoint union of $S_1$ and $S_2$, the elements of $s$ are drawn from those two sets, but are not grouped according to their origin set. Using commutativity, we can move all $y_i \in S_1$ to the front, and all $z_j \in S_2$ to the end. Then the form of $s$ is $(\oplus_i y_i) \oplus (\oplus_j z_j)$, where the elements are grouped according to their origin set. Any element of $(S_1 + S_2)^\oplus$ can be similarly sorted. For the purposes of this proof, assume that all such elements are so sorted.\bigskip \\
 Now, let us define the function F: $(S_1 + S_2)^\oplus \rightarrow (S_1 ^\oplus \times S_2 ^\oplus)$.\\
 Let k be an arbitrary element of $(S_1 + S_2)^\oplus$. We know that $k \in (S_1 + S_2)^\oplus$ must have the form $(\oplus_i y_i) \oplus (\oplus_j z_j)$, where $y_i \in S_1$ and $z_i \in S_2$ as described above. Furthermore, since the + operator is disjoint union, each element includes a marker indicating its origin set, which we can use to locate the boundary between elements of $S_1$ and elements of $S_2$. Therefore we can define F as follows:\\
 \[F((\oplus_i y_i \in S_1) \oplus (\oplus_j z_j \in S_2)) = ((\oplus_i y_i \in S_1), (\oplus_j z_j \in S_2))\]
@@ -73,8 +74,11 @@ Another important feature of FCMs arises from lifting the coproducts of sets to 
 \[inj_1: S_1 \rightarrow (S_1 + S_2) \]
 \[inj_2: S_2 \rightarrow (S_1 + S_2)\]
 Likewise, for the coproduct of FCMs, there are the functions: \\
-\[inj^\oplus_1: S_1^\oplus \rightarrow (S_1 + S_2)^\oplus  :  inj^\oplus_1(\oplus_i n_i x_i) = \oplus_i n_i(inj_1 x_i)\]
-\[inj^\oplus_2: S_2^\oplus \rightarrow (S_1 + S_2)^\oplus  :  inj^\oplus_2(\oplus_i n_i x_i) = \oplus_i n_i(inj_2 x_i)\]
+\[inj^\oplus_1: S_1^\oplus \rightarrow (S_1 + S_2)^\oplus  \]
+\[inj^\oplus_1(\oplus_i n_i x_i) = \oplus_i n_i(inj_1 x_i)\]
+\smallskip
+\[inj^\oplus_2: S_2^\oplus \rightarrow (S_1 + S_2)^\oplus \]
+\[ inj^\oplus_2(\oplus_i n_i x_i) = \oplus_i n_i(inj_2 x_i)\]
 Using this property, let us now define $G: (S_1 ^\oplus \times S_2 ^\oplus) \rightarrow (S_1 + S_2)^\oplus$.\\
 Let $k$ be an arbitrary element of $(S_1 ^\oplus \times S_2 ^\oplus)$. We know $k$ must have the form $(M_1 , M_2)$ where $M_i$ is a multiset of the form $(n_1z_1 \oplus ... \oplus n_bz_b)$, and all $z \in S_i$ for $i\in\{1, 2\}$ (all n being natural number counters for the multiset).\\
 Therefore we define the function G as follows:\\
@@ -109,15 +113,15 @@ $i_3 = i_1;$\\
 $f_3 = f_2;$\\
 $tar(f_1) = i_2$;\\
 $src(i_2) = f_1$.\bigskip\\
-AND for CNETs is the categorical product(see pg. 114):\\
-$N_1$ AND $N_2$ = $N_1 \times N_2$ = $N_3$, where $(N_3,  i_3, f_3)$ such that:\\
-$N_1 \times N_2$ = $T_1 \times T_2 \rightarrow S_1^\oplus \times S_2^\oplus$;\\
-$i_3$ is a new place;\\
-$src(i_3 \times \emptyset) = \emptyset;$\\
-$tar(i_3\times \emptyset) =\{i_1 \oplus i_2\};$\\
-$f_3$ is a new place;\\
-$src(f_3\times \emptyset) = \{f_1 \oplus f_2\};$\\
-$tar(f_3\times \emptyset) = \emptyset;$ \bigskip\\
+AND for CNETs is the tensor product?(under construction):\\
+%$N_1$ AND $N_2$ = $N_1 \times N_2$ = $N_3$, where $(N_3,  i_3, f_3)$ such that:\\
+%$N_1 \times N_2$ = $T_1 \times T_2 \rightarrow S_1^\oplus \times S_2^\oplus$;\\
+%$i_3$ is a new place;\\
+%$src(i_3 \times \emptyset) = \emptyset;$\\
+%$tar(i_3\times \emptyset) =\{i_1 \oplus i_2\};$\\
+%$f_3$ is a new place;\\
+%$src(f_3\times \emptyset) = \{f_1 \oplus f_2\};$\\
+%$tar(f_3\times \emptyset) = \emptyset;$ \bigskip\\
 OR for CNETs is the coproduct(p.126):\\
 $N_1$ OR $N_2 = N_3$, where $(N_3,  i_3, f_3)$ such that:\\
 $N_1 + N_2$ = $T_1 + T_2 \rightarrow (S_1 + S_2)^\oplus$;\\
@@ -129,6 +133,14 @@ $src(f_3) = \{f_1\};$\\
 $src(f_3) = \{f_2\};$\\
 $src(f_3) = \{f_1 \oplus f_2\};$\\
 $tar(i_3) =\emptyset$\bigskip\\
+\begin {proof}
+$N_3$ is a coproduct if it satisfies the following conditions: $N_3$ must have morphisms $inj_1: N_1 \rightarrow N_1 + N_2$ and $inj_2: N_2 \rightarrow N_1 + N_2$ such that for any object R and morphisms $f_1: N_1\rightarrow R$ and $f_2: N_2\rightarrow R$, there is a unique morphism $f: N_1 + N_2 \rightarrow R$ such that $f_1 = f(inj_1)$ and $f_2 = f(inj_2)$.\\
+\bigskip\\
+Based on the definition given, the places of $N_3$ are the places of $N_1 \cup N_2$, with a new place $i_3$. Likewise, the transitions of $N_3$ are those of $T_1 \cup T_2$, with a new transition $(i_3, i_1 \oplus i_2)$. Lifting the coproducts of sets to CNETS will give us $inj_1$ and $inj_2$. We need to verify that these morphisms adhere to the requirement described above.\\
+\bigskip\\
+Let us define the morphism $f: N_1 +  N_2 \rightarrow R$. 
+\end{proof}
+\newpage
 Example nets:
 %
 K = \\

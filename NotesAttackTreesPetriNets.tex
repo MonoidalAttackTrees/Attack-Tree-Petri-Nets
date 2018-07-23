@@ -84,10 +84,25 @@ Let $k$ be an arbitrary element of $(S_1 ^\oplus \times S_2 ^\oplus)$. We know $
 Therefore we define the function G as follows:\\
 \[G(M_1, M_2) = (inj_1^\oplus M_1) \oplus (inj_2^\oplus M_2)\]
 By this transformation, we can match an element of $(S_1 ^\oplus \times S_2 ^\oplus)$ with an element of $(S_1 + S_2)^\oplus$, since by the nature of coproducts, any s $\in S_1^\oplus \in (S_1+S_2)^\oplus$, and similarly any s $\in S_2^\oplus \in (S_1+S_2)^\oplus$.\bigskip \\
-Now that we have defined a homomorphism in both directions, we must prove that F;G = Id and G;F = Id. Take an arbitrary multiset M of the form $(n_1z_1 \oplus ... \oplus n_bz_b)$, with some elements drawn from a set $S_a$ and some drawn from $S_b$ (all n being natural number counters for the multiset). Sorting this multiset will yield the form $(\oplus_a n_a y_a) \oplus (\oplus_b n_b z_b)$, where $y_a \in S_a$ and $z_b \in S_b$. Putting this into the functions, we get:\\ 
-\[F((\oplus_a n_a y_a) \oplus (\oplus_b n_b z_b)) = ((\oplus_a n_a y_a), (\oplus_b n_b z_b))\]
-\[G((\oplus_a n_a y_a), (\oplus_b n_b z_b)) = ((\oplus_a n_a y_a) \oplus (\oplus_b n_b z_b))\] 
-Thus, F;G = Id.\\
+
+Now that we have defined a homomorphism in both directions, we must
+prove that $F;G = Id$ and $G;F = Id$. Take an arbitrary multiset $M$
+of the form $(n_1z_1 \oplus ... \oplus n_bz_b)$, with some elements
+drawn from a set $S_a$ and some drawn from $S_b$ and each $n_i \in
+\mathbb{N}$. Sorting this multiset will yield the form $(\oplus_a n_a
+y_a) \oplus (\oplus_b n_b z_b)$, where $y_a \in S_a$ and $z_b \in
+S_b$. Putting this into the functions, we get:
+\begin{center}
+  \begin{math}
+    \begin{array}{lll}
+      G(F((\oplus_a n_a y_a) \oplus (\oplus_b n_b z_b)))
+      & = & G((\oplus_a n_a y_a), (\oplus_b n_b z_b))\\
+      & = & (\oplus_a n_a y_a) \oplus (\oplus_b n_b z_b)\\
+    \end{array}
+  \end{math}
+\end{center}
+Thus, $F;G = Id$.\\
+
 Now let us check for identity in the opposite direction, proving G;F = Id.\\
 Take arbitrary sets $S_a$ and $S_b$. Generate the FCM of each and then their product: $(S_a^\oplus \times S_b^\oplus)$. The result will have the form $((\oplus_a n_a y_a), (\oplus_b n_b z_b))$, where $y_a \in S_a$ and $z_b \in S_b$. Putting this into the functions, we get:\\ 
 \[G((\oplus_a n_a y_a), (\oplus_b n_b z_b)) = ((\oplus_a n_a y_a) \oplus (\oplus_b n_b z_b))\] 
@@ -133,6 +148,18 @@ $src(f_3) = \{f_1\};$\\
 $src(f_3) = \{f_2\};$\\
 $src(f_3) = \{f_1 \oplus f_2\};$\\
 $tar(i_3) =\emptyset$\\
+
+\begin{definition}
+  \label{def:OR-PN}
+  WRITE DEFINITION OF OR.
+\end{definition}
+
+\begin{lemma}
+  \label{lemma:fill-me-in}
+  State that OR is a coproduct.
+\end{lemma}
+
+
 \begin {proof}
 $N_3$ is a coproduct if it satisfies the following conditions: $N_3$ must have morphisms $inj_1: N_1 \rightarrow N_1 + N_2$ and $inj_2: N_2 \rightarrow N_1 + N_2$ such that for any object R and morphisms $f_1: N_1\rightarrow R$ and $f_2: N_2\rightarrow R$, there is a unique morphism $f: N_1 + N_2 \rightarrow R$ such that $f_1 = f(inj_1)$ and $f_2 = f(inj_2)$.\\
 \smallskip\\

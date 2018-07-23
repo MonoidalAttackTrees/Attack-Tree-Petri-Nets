@@ -1,20 +1,35 @@
-\begin{definition}
-\label{def:Petri-net}
-Petri net: a 5-tuple $(P, T, F, V, m_0)$ 
 
-P = a set of places; like states in automata; denoted by circles or vertices of one color\\
-T = a set of transitions; denoted by rectangles or bars\\
-F = the “flow relation”, a set of arcs; denoted by directional lines\\
-V = multiplicity function mapping the weight of the arcs (this indicates how many tokens are needed to activate the arc)\\
-$M_0$ = the initial marking that assigns a natural number to each place, roughly like resources that “flow through” the net\\
-	tokens: a discrete number of marks denoted as dots inside the places \\
-	these track the execution of the petri net - show what 'instruction' it is on, or what state it is in\\
+\begin{definition}
+  \label{def:Petri-Net}
+  A \textbf{Petri net}, $(P, T, F, V, M_0)$, consists of the following structure:  
+  \begin{itemize}
+  \item A finite set of places $P$,
+  \item A finite set of transitions $T$ the is disjoint form $P$,
+  \item A flow relation, $T \subseteq (P \times T) \cup (P \times T)$,
+  \item A multiplicity function $V : F \to \mathbb{N}^+$, and
+  \item An initial marking $M_0$,
+  \end{itemize}
+  
+\end{definition}
+
+
+%% \begin{definition}
+%% \label{def:Petri-net}
+%% Petri net: a 5-tuple  
+
+%% P = a set of places; like states in automata; denoted by circles or vertices of one color\\
+%% T = a set of transitions; denoted by rectangles or bars\\
+%% F = the “flow relation”, a set of arcs; denoted by directional lines\\
+%% V = multiplicity function mapping the weight of the arcs (this indicates how many tokens are needed to activate the arc)\\
+%% $M_0$ = the initial marking that assigns a natural number to each place, roughly like resources that “flow through” the net\\
+%% 	tokens: a discrete number of marks denoted as dots inside the places \\
+%% 	these track the execution of the petri net - show what 'instruction' it is on, or what state it is in\\
 	
-\noindent Restrictions: \\
-P and T are finite sets. $P\cap T = \emptyset$   and $P\cup T \neq \emptyset.$\\
-F is a relation between P and T: $ F \subseteq (P \times T) \cup (T \times P)$\\
-V :$ F \rightarrow N+ $\\
-\end {definition}
+%% \noindent Restrictions: \\
+%% P and T are finite sets. $P\cap T = \emptyset$   and $P\cup T \neq \emptyset.$\\
+%% F is a relation between P and T: $ F \subseteq (P \times T) \cup (T \times P)$\\
+%% V :$ F \rightarrow N+ $\\
+%% \end {definition}
 Firing of a petri net: this captures the dynamic behavior of the petri net\\
 Firing enables the transition from the initial marking to successor markings based on the firing rules\\
 Pre-place: an input place; a place with an arc to a transition; denoted $(\ldotp , t) or  \cdot t$\\

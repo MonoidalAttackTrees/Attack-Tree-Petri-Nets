@@ -1,45 +1,17 @@
-
-\begin{definition}
-  \label{def:Petri-Net}
-  A \textbf{Petri net}, $(P, T, F, V, M_0)$, consists of the following structure:  
-  \begin{itemize}
-  \item A finite set of places $P$,
-  \item A finite set of transitions $T$ the is disjoint form $P$,
-  \item A flow relation, $T \subseteq (P \times T) \cup (P \times T)$,
-  \item A multiplicity function $V : F \to \mathbb{N}^+$, and
-  \item An initial marking $M_0$,
-  \end{itemize}
-  
-\end{definition}
-
-
-%% \begin{definition}
-%% \label{def:Petri-net}
-%% Petri net: a 5-tuple  
-
-%% P = a set of places; like states in automata; denoted by circles or vertices of one color\\
-%% T = a set of transitions; denoted by rectangles or bars\\
-%% F = the “flow relation”, a set of arcs; denoted by directional lines\\
-%% V = multiplicity function mapping the weight of the arcs (this indicates how many tokens are needed to activate the arc)\\
-%% $M_0$ = the initial marking that assigns a natural number to each place, roughly like resources that “flow through” the net\\
+General notes on petri net firing/reachable markings/safe/bounded
+%%    A multiplicity function $V : F \to \mathbb{N}^+$, and
+%%   A flow relation, $T \subseteq (P \times T) \cup (P \times T)$,
 %% 	tokens: a discrete number of marks denoted as dots inside the places \\
 %% 	these track the execution of the petri net - show what 'instruction' it is on, or what state it is in\\
-	
-%% \noindent Restrictions: \\
-%% P and T are finite sets. $P\cap T = \emptyset$   and $P\cup T \neq \emptyset.$\\
-%% F is a relation between P and T: $ F \subseteq (P \times T) \cup (T \times P)$\\
-%% V :$ F \rightarrow N+ $\\
-%% \end {definition}
-Firing of a petri net: this captures the dynamic behavior of the petri net\\
-Firing enables the transition from the initial marking to successor markings based on the firing rules\\
+Firing of a petri net demonstrates the flow of events through the net, from the initial marking through successor markings, based on the firing rules (given in F).\\
 Pre-place: an input place; a place with an arc to a transition; denoted $(\ldotp , t) or  \cdot t$\\
 If a pre-place has at least as many marks as the output arc's weight, then it is fulfilled and the transition the arc points to is activated, causing the transition to output to the post-place. However, the transition outputs the weight of its output arcs. Output $\ne$ Input\\
 Post-place: an output place; a place with an arc from a transition; denoted $(t, \ldotp ) or t \cdot $ \\
 A firing sequence from a place is a trace through a sequence of transitions\\
 A reachable marking from one place to another means that there is a firing sequence from the first place to the last\\
 The set RN := RN($m_0$) is the state space, the set of all reachable states in the petri net\\
-This holds information about what events are possible and impossible in the petri net\\
-Bounded: a petri net is bounded if its state space is finite \smallskip\\
+This holds information about what events are possible and impossible in the petri net.\\
+Bounded: a petri net is bounded if its state space is finite. \smallskip\\
 
 A k-safe petri net is one in which, in every marking reachable from the initial marking, there are at most k tokens.\\
 In classic petri nets, aka 1-safe petri nets, places can have at most one mark\\

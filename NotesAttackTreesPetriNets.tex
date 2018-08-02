@@ -159,15 +159,14 @@ Since $(S_1 ^\oplus \times S_2 ^\oplus) \leftrightarrow (S_1 + S_2)^\oplus$, we 
    \item Morphisms for chainable nets must preserve both i and f. So, a morphism $<a,b>: (N, i, f) \to (N', i', f')$ is an ordinary net morphism that preserves the markings $b(i) = i'$ and $b(f) = f'$. 
  \end{itemize}
 \end{definition}
-The chainable petri net, or CNET, is a petri net that tracks both its initial and its final places, to facilitate chaining the petri net together with other petri nets at either end. This enables the use of operators such as SEQ, AND, \& OR.\\
+The chainable petri net, or CNET, is a petri net that tracks both its initial and its final places, to facilitate chaining the petri net together with other petri nets at either end. This enables the use of operators such as OR, SEQ, \& AND.\\
 Suppose we have two CNETs, $(N_1, i_1, f_1)$ and $(N_2, i_2, f_2)$. \\
 $N_1 = (src, tar: T \to S^\oplus)$ and $N_2 = (src', tar': T' \to S'^\oplus)$.\bigskip\\
-SEQ for CNETs is the composition operation:\\
-$N_1$ ; $N_2$ = $T + T' \to S^\oplus + S'^\oplus$;\\
-$i = i_1;$\\
-$f = f_2;$\\
-$f_1 \to i_2$;\\
-$i_2  \to f_1$.\bigskip\\
+%SEQ for CNETs is the composition operation:\\
+%$N_1$ ; $N_2$ = $T + T' \to S^\oplus + S'^\oplus$;\\
+%$i = i_1;$\\
+%$f = f_2;$\\
+%$f_1 \to i_2$;\\
 %AND for CNETs is the tensor product?(under construction):\\
 %$N_1$ AND $N_2$ = $N_1 \times N_2$ = $N_3$, where $(N_3,  i_3, f_3)$ such that:\\
 %$N_1 \times N_2$ = $T_1 \times T_2 \to S_1^\oplus \times S_2^\oplus$;\\
@@ -177,17 +176,10 @@ $i_2  \to f_1$.\bigskip\\
 %$f_3$ is a new place;\\
 %$src(f_3\times \emptyset) = \{f_1 \oplus f_2\};$\\
 %$tar(f_3\times \emptyset) = \emptyset;$ \bigskip\\
-OR for CNETs is the coproduct(p.126):\\
-$N_1 + N_2$ = $(T_1 + T_2) \to ((S_1 + S_2)^\oplus +  i_3 + f_3)$;\\
-$i_3$  = $i_1 \oplus i_2$;
-$f_3$ is a new place with the following new transitions:\\
-$f_1 \to f_3$;\\
-$f_2 \to f_3$;\\
-$f_3 \to \emptyset$.\\
-
+%OR for CNETs is the coproduct(p.126):\\
 \begin{example}
   \label{ex:OR-PN}
-Now we will examine disjunction (OR) in CNETs, starting with a basic example. Consider an ordinary Petri net $(P_x, T_x, src_x, tar_x)$. A simple model of the disjunction $p_3 OR p_4$ is given by the following relations:
+Let us examine disjunction (OR) in CNETs, starting with a basic example. Consider an ordinary Petri net $(P_x, T_x, src_x, tar_x)$. A simple model of the disjunction $p_2 OR p_3$ is given by the following relations:
   \begin{itemize}
   \item Let $P = \{p_1, p_2, p_3\}$, and $src_x, tar_x$: $(p_1) \to (p_3)$, and $(p_2) \to (p_3)$. 
   \item Given this relation, as long as $p_1, p_2,$ or both are activated, $p_3$ will be activated. 
@@ -197,14 +189,15 @@ Within a single Petri net, we can see that disjunction is modeled graphically by
 \end{example}
 \begin{definition}
   \label{def:OR-PN}
-  Given two CNETs, $N_1= (P_1, T_1, src_1, tar_1, i_1, f_1)$ and $N_2= (P_2, T_2, src_2, tar_2, i_2, f_2)$, their \textbf{disjunction} is $N_1 \oplus N_2$, where: * NOTE WHY IS IT $\oplus$ and not +?
+  Given two CNETs, $N_1= (P_1, T_1, src_1, tar_1, i_1, f_1)$ and $N_2= (P_2, T_2, src_2, tar_2, i_2, f_2)$, their \textbf{disjunction} is $N_1 + N_2$, where: 
 \begin{itemize}
-\item T = $T_1 + T_2$,
-\item P = $((P_1 + P_2) + (i_1 , i_2) + f_1 + f_2)$ (note: if the initial places are paired why does this not result in AND behavior? The choice part happens in the final places? Did not pair the final places to make it possible to finish one and not the other, and still complete the firing.)
-\item $[src_1, src_2], [tar_1, tar_2]: T\to P^\oplus$. (indicating we should use the appropriate function depending on origin set)
-\item The initial place $i = i_1 \oplus i_2$;
-\item The final place f.
+\item The initial place $i = (i_1 , i_2)$.
+\item The final place $f_3$ is a new place.
+\item P = $((P_1 + P_2) + \{(i_1 , i_2)\} + \{f_1\} + \{f_2\} + \{f_3\}).$ NOTE do we include i and f in P or are they separate?
+\item T = ($T_1 + T_2$ + ($f_1 \to f_3$) + ($f_2 \to f_3$) + ($f_3 \to \emptyset$)).
+\item $[src_1, src_2], [tar_1, tar_2]: T\to P^\oplus$. 
 \end{itemize}
+We form the initial place of the disjunction by pairing the initial places of the two disjuncts, so that each branch of the disjunction can be reached initially. The final place is a new place that is the target of the final place of each disjunct, so that the completion of either branch (or both) can trigger the disjunction's final place. The disjunction's places gather these elements together, along with the places of each branch. Finally, the src and tar functions appropriate to each branch are used to compute runs, with the addition of the new transitions for f.  
 \end{definition}
 \begin{lemma}
   \label{lemma:OR-coproduct}

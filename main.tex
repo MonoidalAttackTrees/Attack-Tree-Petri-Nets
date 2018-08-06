@@ -5,7 +5,7 @@
 \usepackage{txfonts}
 \usepackage{graphicx}
 \usepackage{stmaryrd}
-%% \usepackage{todonotes}
+\usepackage{todonotes}
 \usepackage{mathtools}
 \usepackage{amsmath}
 \usepackage{mathpartir}
@@ -23,6 +23,9 @@
 \newtheorem{definition}[theorem]{Definition}
 \newtheorem{proposition}[theorem]{Proposition}
 \newtheorem{example}[theorem]{Example}
+
+\newcommand{\todoBA}[1]{\todo[linecolor=purple,backgroundcolor=blue!40!white,bordercolor=purple]{BA: #1}}
+\newcommand{\todoHE}[1]{\todo[linecolor=black,backgroundcolor=black!40!white,bordercolor=black]{HE: #1}}
 
 \title{Notes on Petri Nets and Attack Trees}
 

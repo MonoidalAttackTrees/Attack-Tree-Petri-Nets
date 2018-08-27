@@ -36,7 +36,7 @@ pdf : $(PDF)
 
 $(PDF) : main.tex Makefile NotesAttackTreesPetriNets.tex petri.tex
 	$(PDFLATEX) -jobname=$(TexFileName) $(OTTOutputFile)
-# bibtex $(TexFileName)
+	bibtex $(TexFileName)
 	$(PDFLATEX) -jobname=$(TexFileName) $(OTTOutputFile)
 	$(PDFLATEX) -jobname=$(TexFileName) $(OTTOutputFile)
 

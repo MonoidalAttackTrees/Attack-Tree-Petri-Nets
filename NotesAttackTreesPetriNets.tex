@@ -268,7 +268,13 @@ Next let us examine disjunction (OR) in CNETs, starting with a basic example. Co
   \item Given this relation, as long as $s_1, s_2,$ or both are activated, $s_3$ will be activated. 
   \item If neither $s_1$ nor $s_2$ are activated, $s_3$ will also remain inactive.  
   \end{itemize}
-Within a single Petri net, we can see that disjunction is modeled graphically by two transition arcs leading to one place. If either transition fires, the place will be activated, enabling its subsequent transition(s) to fire. The disjunction of two CNETs will result in a similar pattern: if at least one of the CNET disjuncts reaches its final marking, then the disjunction itself will reach its final marking.   
+Within a single Petri net, we can see that disjunction is modeled
+graphically by two transition arcs leading to one place. If either 
+transition fires, the place will be activated, enabling its subsequent
+transition(s) to fire. The disjunction of two CNETs will result in a
+similar pattern: if at least one of the CNET disjuncts reaches its
+final marking, then the disjunction itself will reach its final
+marking.
 \end{example}
 
 \begin{definition}
@@ -417,3 +423,6 @@ Clearly,$ G \circ F = F \circ G,$ since F removes the origin markings  \{1\} and
 \newpage
 
 % subsection MeseguerMontanari (end)
+
+
+\cite{Benton:2018:SEC:3236950.3236975}

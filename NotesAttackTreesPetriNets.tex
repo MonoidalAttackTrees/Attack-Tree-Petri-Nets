@@ -82,7 +82,7 @@
 \end{definition}
 We will denote a Petri net $(S, T, \mathsf{src},
 \mathsf{tar},\_^{\oplus},\emptyset,\oplus)$ by the pair $(S^\oplus,T)$ for
-readability. Also, for $t \in T | \mathsf{src(t)} = s_A , \mathsf{tar(t)} = s_B$, we will use the notation $t = (s_A \rightarrow s_B)$ for clarity and readability. 
+readability. Also, for $t \in T | \mathsf{src(t)} = s_A , \mathsf{tar(t)} = s_B$, we will use the notation $t = (s_A \rightarrow s_B)$ for clarity and conciseness. 
 %%\todoHE{Please be consistent with denoting Peti nets.  For example, see the next lemma.}
 %
 %\begin{definition}
@@ -175,7 +175,7 @@ Since $(S_1 ^\oplus \times S_2 ^\oplus) \leftrightarrow (S_1 + S_2)^\oplus$, we 
 %
 \begin{definition}
   \label{Chainable-Petri-Net}
-  A \textbf{chainable petri net}, $(S^\oplus, T, i, f, start, end)$ is a Petri net with the following additional features: 
+  A \textbf{chainable Petri net}, $(S^\oplus, T, i, f, start, end)$ is a Petri net with the following additional features: 
   \begin{itemize}
   \item An element of $S, i \in S,$ called the initial place. This is the starting point of the net.
   \item An element of $S, f \in S,$ called the final place. This marks the completion of the net.
@@ -193,12 +193,14 @@ First let us look at a simple operation, the sequential ordering (SEQ) of two Pe
   \label{def:SEQ-PN}
    Given two CNETs $N_1 = (S_1^\oplus, T_1, i_1, f_1, start_1, end_1)$ and $N_2 = (S_2^\oplus, T_2,  i_2, f_2, start_2, end_2)$, the \textbf{sequentitial composition} is  $N_1 ; N_2$, where: 
 \begin{itemize} 
-\item $start = start_1$
-\item $end = end_2$
-\item $S = S_1 + S_2$.\\
+\item $S = S_1 + S_2$.
 \item $T = T_1 + T_2 + \{(f_1 \rightarrow i_2)\}$.
+\item $i = i_1$.
+\item $f=f_2$.
+\item $start = start_1$.
+\item $end = end_2$.
 \end{itemize} 
-Order is key here. Making the first net's $start$ the composition's $start$ ensures that the composition begins with the net that is first in the sequence. Similarly, making the second net's $end$ the composition's $end$ ensures that the composition finishes upon the completion of the second in the sequence. Finally, the new transition between $f_1$ (marking the end of the first net) and $i_2$ (marking the beginning of the second net) provides the necessary connection between the two. 
+Order is key here. Making the first net's $start$ and $i$ the composition's $start$ and $i$ ensures that the composition begins with the net that is first in the sequence. Similarly, making the second net's $end$ and $f$ the composition's $end$ and $f$ ensures that the composition finishes upon the completion of the second in the sequence. Finally, the new transition between $f_1$ (marking the end of the first net) and $i_2$ (marking the beginning of the second net) provides the necessary connection between the two. 
 In order to be sequential, this operation must be associative but not symmetric, so now let us check those properties. 
 \end{definition}
 \begin {lemma}
@@ -211,6 +213,8 @@ The components of $A;B$ are:
 \begin{itemize}
  \item $S_{A;B} = S_A + S_B$.
  \item $T_{A;B} = T_A + T_B + \{(f_A \to i_B)\}$.
+ \item $i_{A;B} = i_A$.
+ \item $f_{A;B} = f_B$.
  \item $start_{A;B} = start_A$.
  \item $end_{A;B} = end_B$.
 \end{itemize}
@@ -218,10 +222,12 @@ The components of $B;A$ are:
 \begin{itemize}
  \item $S_{B;A} = S_B + S_A$.
  \item $T_{B;A} = T_B + T_A + \{(f_B \to i_A)\}$.
+ \item $i_{B;A} = i_B$.
+ \item $f_{B;A} = f_A$.
  \item $start_{B;A} = start_B$.
  \item $end_{B;A} = end_A$.
 \end{itemize}
-Relying on the symmetry of disjoint union, we see that these two compositions have identical places, $S_A + S_B$ = $S_B + S_A$. However, whereas the construction of $A;B$ includes $\{(f_A \to i_B)\} \in T_{A;B}$, the construction of $B;A$ includes $\{(f_B \to i_A)\} \in T_{B;A}.$ Furthermore, the start and end transitions are not the same. Thus, $A;B \neq B;A$ and the operation is not symmetric.
+Relying on the symmetry of disjoint union, we see that these two compositions have identical places, $S_A + S_B$ = $S_B + S_A$. However, whereas the construction of $A;B$ includes $\{(f_A \to i_B)\} \in T_{A;B}$, the construction of $B;A$ includes $\{(f_B \to i_A)\} \in T_{B;A}.$ Furthermore, the start and end transitions and initial and final places are not the same. Thus, $A;B \neq B;A$ and the operation is not symmetric.
 \end{proof}
 \begin{lemma}
 \label{lemma:SEQ-ASSOC}
@@ -231,34 +237,42 @@ The SEQ operation for CNETs, $A;B;C$, is associative.
 Let $A = (S_A^\oplus, T_A, i_A, f_A, start_A, end_A)$, $B = (S_B^\oplus, T_B, i_B, f_B, start_B, end_B)$, and $B = (S_C^\oplus, T_C, i_C, f_C, start_C, end_C)$. Composing the three, $A;B;C$, can be done one of two ways: $(A;B);C$ or $ A;(B;C)$. For the operation to be associative, the following must be true: $(A;B);C = A;(B;C).$ Let us compute each to test for equality.\\
 First, we compute $(A;B);C$ by taking $A;B$:
 \begin{itemize}
-\item $S_{A;B} = S_A + S_B.$
-\item $T_{A;B} = T_A + T_B + \{(f_A \to i_B)\}$.
-\item $start_{A;B} = start_A.$
-\item $end_{A;B} = end_B. $
+ \item $S_{A;B} = S_A + S_B.$
+ \item $T_{A;B} = T_A + T_B + \{(f_A \to i_B)\}$.
+ \item $i_{A;B} = i_A$.
+ \item $f_{A;B} = f_B$.
+ \item $start_{A;B} = start_A.$
+ \item $end_{A;B} = end_B. $
 \end{itemize} 
 Now we add C:
 \begin{itemize}
-\item $S_{(A;B);C} = S_A + S_B + S_C.$
-\item $T_{(A;B);C} = T_A + T_B + \{(f_A \to i_B)\} + \{(f_B \to i_C)\}.$
-\item $start_{(A;B);C} = start_A.$
-\item $end_{(A;B);C} = end_C. $
+ \item $S_{(A;B);C} = S_A + S_B + S_C.$
+ \item $T_{(A;B);C} = T_A + T_B + \{(f_A \to i_B)\} + \{(f_B \to i_C)\}.$ 
+ \item $i_{(A;B);C} = i_A$.
+ \item $f_{(A;B);C} = f_C$.
+ \item $start_{(A;B);C} = start_A.$
+ \item $end_{(A;B);C} = end_C. $
 \end{itemize}
 Now let us follow the second path, computing $A;(B;C)$ by first taking $B;C$:
 \begin{itemize}
-\item $S_{B;C} = S_B + S_C.$
-\item $T_{B;C} = T_B + T_C + \{(f_B \to i_C)\}.$
-\item $start_{B;C} = start_B.$
-\item $end_{B;C} = end_C.$ 
+ \item $S_{B;C} = S_B + S_C.$
+ \item $T_{B;C} = T_B + T_C + \{(f_B \to i_C)\}.$
+ \item $i_{B;C} = i_B$.
+ \item $f_{B;C} = f_C$
+ \item $start_{B;C} = start_B.$
+ \item $end_{B;C} = end_C.$ 
 \end{itemize} 
 Now we add A:
 \begin{itemize}
-\item $S_{A;(B;C)} = S_A + S_B + S_C.$
-\item $T_{A;(B;C)} = T_A + T_B + \{(f_A \to i_B)\} + \{(f_B \to i_C)\}.$
-\item $start_{A;(B;C)} = start_A.$
-\item$ end_{A;(B;C)} = end_C. $
+ \item $S_{A;(B;C)} = S_A + S_B + S_C.$
+ \item $T_{A;(B;C)} = T_A + T_B + \{(f_A \to i_B)\} + \{(f_B \to i_C)\}.$
+ \item $i_{A;(B;C)} = i_A$.
+ \item $f_{A;(B;C)} = f_C$
+ \item $start_{A;(B;C)} = start_A.$
+ \item$ end_{A;(B;C)} = end_C. $
 \end{itemize}  
 These clearly give the same result, showing that $(A;B);C = A;(B;C).$ \\
-In sequential composition, the first CNET's starting transition $start_A$ always becomes the composition's start. Then, the final place of a preceding net is joined to the initial place of the subsequent net by adding to $T$ for the composition. The final transition, $end$, of the last net in the sequence becomes the $end$ of the composition. Thus, the operation is associative for any number of nets.%\todoBA{continue from here making notation for CNETS uniform and making morphisms modify src and tar}
+In sequential composition, the first CNET's starting transition $start_A$ and initial place $i_A$ always becomes the composition's start and initial place. Then, the final place of a preceding net is joined to the initial place of the subsequent net by adding to $T$ for the composition. The final transition, $end$, of the last net in the sequence becomes the $end$ of the composition, as does the final place, $f_C$. Thus, the operation is associative for any number of nets.
 \end{proof}
 \begin{lemma}
 \label{lemma:SEQ:REP}
@@ -266,11 +280,13 @@ The SEQ operator for CNETs takes repetition into account. That is, $A;A \neq A$.
 \end{lemma}
 \begin{proof}
 Let $A = (S_A^\oplus, T_A, i_A, f_A, start_A, end_A)$. 
-Following the definition of sequential composition, we see that the elements of the two CNETs are joined by disjoint union. In this operation, members of each set are paired with a label to indicate their origin set. Since the origin nets have the same name, we will use $x\in \{1,2\}$to make them distinct, just for the sake of clarity. 
+Following the definition of sequential composition, we see that the elements of the two CNETs are joined by disjoint union. In this operation, members of each set are paired with a label to indicate their origin set. Since the origin nets have the same name, we will use $x\in \{1,2\}$to make them distinct. 
 Now let us compute $A;A$.
 \begin{itemize}
 \item $S_{A;A} = S_A + S_A = (S_A \times \{1\}) \cup (S_A \times \{2\}).$
-\item $T_{A;A} = T_A1 + T_A2 + (f_{A_1} \to i_{A_2}\}$.\todoBA{the T needs to respect which A it came from - does this just happen by definition?}
+\item $T_{A;A} = T_{A_1} + T_{A_2} + (f_{A_1} \to i_{A_2}\}$.\todoBA{the T needs to respect which A it came from - does this just happen by definition?}
+\item $i_{A;A} = i_{A_1}.$
+\item $f_{A;A} = f_{A_1}.$
 \item $start_{A;A} = start_{A_1}.$
 \item $end_{A;A} = end_{A_2}. $
 \end{itemize} 
@@ -298,23 +314,23 @@ marking.
   \label{def:OR-PN}
   Given two CNETs, $N_1= (S_1^\oplus, T_1, i_1, f_1, start_1, end_1)$ and $N_2= (S_2^\oplus, T_2, i_2, f_2, start_2, end_2)$, their \textbf{disjunction} is $N_1 + N_2$, where:  
   \begin{itemize}
-  \item The initial place $i_3$ is a new place.
-  \item The final place $f_3$ is a new place.
-  \item The start transition $start_3 = (i_3 \to (i_1, i_2))$.
-  \item The end transition $end_3 = \{(f_1 \to f_3) + (f_2 \to f_3)\}$ 
-  \item S = $S_1 + S_2 + \{i_3\} + \{f_3\}$ 
-  \item T = $T_1 + T_2 + \{(f_1 \to f_3), (f_2 \to f_3),  (f_3 \to \emptyset), (i_3 \to (i_1, i_3))\}$.
-    \todoHE{I do not know how to read this definition.}
-    \todoBA{Fixed? but the end transition is actually a set of transitions. They do not all have to complete, not sure how to make this work with the original definition of a CNET. The net does still end in a single place though.} 
+  \item The initial place $i_{1+2} = (i_1, i_2)$.
+  \item The final place $f_{1+2}$ is a new place.\todoBA{this could be f1 + f2, which would preserve coproductness ASK}
+  \item The start transition $start_{1+2} = (start_1, start_2)$.
+  \item The end transition $end_{1+2} = \{(f_1 \to f_{1+2})\} + \{(f_2 \to f_{1+2})\}$ 
+  \item S = $S_1 + S_2 + \{i_{1+2}\} + \{f_{1+2}\}$ 
+  \item T = $T_1 + T_2 + \{(f_1 \to f_{1+2}), (f_2 \to f_{1+2})\}$.
+  \todoBA{Fixed? but the end transition is actually a set of transitions. They do not all have to complete; I think they work correctly as defined. not sure the notation is OK, CONFIRM WITH DR. EADES. } 
+  \item $[\mathsf{src_1}, \mathsf{src_2}], [\mathsf{tar_1}, \mathsf{tar_2}]: T\to S^\oplus$. \todoBA{don't think we need this in short notation, ASK}
   \end{itemize}  
-  The start of the new net leads from the new initial place to the initial places of the component nets. This way, each branch of the disjunction
+  The pair of the initial places of the disjuncts is the initial place of the new net, and likewise the starting transition is the pair of the disjuncts' starting transitions. This way, each branch of the disjunction
   can be reached initially. The final place is a new place that is the
   target of the transition from each disjunct, so that the completion of
   either branch (or both) can trigger the disjunction's final place. The
   disjunction's places gather these elements together, along with the
   places of each branch. Finally, the transitions appropriate
   to each branch are used to compute runs, with the addition of the new
-  transitions for i and f.
+  transitions for f.
 \end{definition}
 
 \begin{lemma}
@@ -340,13 +356,13 @@ $N_1 + N_2$ is a coproduct if it has morphisms $i_1: A \to A + B$ and $i_2: B \t
     \efig
   \end{math}
 \end{center}
-\todoBA{need to cascade changes to i, f, start and end from definition above if definition is correct, and make Petri net notation consistent}
+\todoBA{See definition 8; do I need to explain why we are using long notation for this when we've been doing short notation for CNETS up to this point?}
 Let $A = (P_A, T_A, \mathsf{src_A}, \mathsf{tar_A}, i_A, f_A)$ and $B = (P_B, T_B, \mathsf{src_B}, \mathsf{tar_B}, i_B, f_B)$, and take A + B.\\
 Let us define $i_0$ and $i_1$, which are injections for Petri nets. We will take it by parts for clarity.\\
 $P_{A+B} = (P_A +P_B+\{(i_A, i_B)\} +\{f_A\} + \{f_B\})$\\
 The coproduct of sets of places has the injective functions already, which covers all the constituents except the initial places. For the initial places, $i_A \to i_A \times i_B$ and $i_B \to i_A \times i_B$ just maps the individual initial place to the pair of initial places, using the position in the pair to indicate whether it is $i_A$ or $i_B$.\\
-$T_{A+B} = T_A + T_B$, so again we can use the coproduct of sets to obtain the injective functions for this part of the net.\\
- $[\mathsf{src_1}, \mathsf{src_2}], [\mathsf{tar_1}, \mathsf{tar_2}]: T\to P^\oplus$. These functions already respect set membership, and so their injective function is also clear. Since these composite pieces are all coproducts, we can rely on their injections to yield the injections of the larger structure.\smallskip\\ 
+$T_{A+B} = T_A + T_B$, so again we can use the coproduct of sets to obtain the injective functions for this part of the net.\\ %\todoBA{this is not following the definition- check and see note above}
+$[\mathsf{src_1}, \mathsf{src_2}], [\mathsf{tar_1}, \mathsf{tar_2}]: T\to P^\oplus$. These functions already respect set membership, and so their injective function is also clear. Since these composite pieces are all coproducts, we can rely on their injections to yield the injections of the larger structure.\smallskip\\ 
 Now, suppose we have another CNET C and morphisms $f: A\to C$ and $g: B\to C$; we define $h$ as follows:\\
   \begin{equation}
     h(x)=
@@ -368,23 +384,23 @@ This provides a morphism as required, showing that the CNET disjunction is a cop
 \bigskip\\
 \end{proof}
 \begin{definition}
-  \label{def:PARA-AND-PN}
-  Given two CNETs, $N_1= (P_1, T_1, \mathsf{src_1}, \mathsf{tar_1}, i_1, f_1)$ and $N_2= (P_2, T_2, \mathsf{src_2}, \mathsf{tar_2}, i_2, f_2)$, their \textbf{parallel conjunction} is $N_1 \times N_2$, where: 
+  \label{def:SYNC-AND-PN}
+   Given two CNETs, $N_1= (P_1, T_1, \mathsf{src_1}, \mathsf{tar_1}, i_1, f_1)$ and $N_2= (P_2, T_2, \mathsf{src_2}, \mathsf{tar_2}, i_2, f_2)$, their \textbf{synchronous conjunction} is $N_1 \times N_2$, where: 
 \begin{itemize}
-\item The initial place $i$ is a new place.
-\item The final place $f$ is a new place.
-\item The beginning transition $start = (i \to (i_1, i_2)$. 
-\item The ending transition $end = ((f_1, f_2) \to f)$.
-\item P = $(P_1 \times P_2) + i + f$.
-\item T = $(T_1 \times T_2) + \{start\} +\{end\}$.
+\item The initial place $i = (i_1, i_2)$.
+\item The final place $f = (f_1, f_2)$.\todoBA{should the final place be a pair or does it need to be single?}
+\item The beginning transition $start = (start_1, start_2)$. 
+\item The ending transition $end = (end_1, end_2)$.
+\item P = $P_1 + P_2$.
+\item T = $(T_1 \times T_2)$.
 \item $[\mathsf{src_1}, \mathsf{src_2}], [\mathsf{tar_1}, \mathsf{tar_2}]: T\to P^\oplus$. \todoBA{Do I need this part?}
 \end{itemize}
-The initial place of parallel conjunction is the source of the $start$ transition, and the target of $start$ is the pair of initial places from the two branches. This ensures that each branch can be reached initially. The conjunction's places are formed by pairing the places of the two branches. The transitions are likewise paired, effecting the parallelization necessary for this operation. Finally, the $end$ transition has the pair of final places from each branch as its source, requiring that both complete in order to activate the transition to the final place of the conjunction, which is the target of $end$. 
+The initial place of synchronous conjunction is the pair of initial places from the two branches. This ensures that each branch will be reached initially. The conjunction's places are formed by pairing the places of the two branches. The transitions are likewise paired, effecting the synchronization necessary for this operation. Finally, the $end$ transition has the pair of final places from each branch as its source, requiring that both complete in order to activate the transition to the final place of the conjunction, which is the target of $end$. 
 \end{definition}
-\todoBA{Probably should prove that this is parallel. Doing this will require me to look inside each branch to see how they are running. How can I do that?}
+\todoBA{Probably should prove that this is synchronous. How can I do that?}
 \begin{lemma}
-\label{lemma:PARA-AND-PRODUCT}
-The parallel conjunction of two CNETs, $A \times B$, is a product.
+\label{lemma:SYNC-AND-PRODUCT}
+The synchronous conjunction of two CNETs, $A \times B$, is a product.
 \end{lemma}
 \begin{proof}
 $N_1 \times N_2$ is a product if it has morphisms $i_1: A \times B \to A$ and $i_2: A \times B \to B$ such that for any object C with morphisms $f: C\to A$ and $g: C\to B$, there is a unique morphism $h: C \to A \times B$ such that $f =h; i_1$ and $g = h;i_2$, meaning that this diagram commutes:\\
@@ -406,14 +422,14 @@ $N_1 \times N_2$ is a product if it has morphisms $i_1: A \times B \to A$ and $i
 \end{center}
 Let $A = (P_A, T_A, \mathsf{src_A}, \mathsf{tar_A}, i_A, f_A)$ and $B = (P_B, T_B, \mathsf{src_B}, \mathsf{tar_B}, i_B, f_B)$, and take $A \times B$.\\
 Let us define $i_1$ and $i_2$, which are projections for Petri nets. We will take it by parts for clarity.\\
-$P_{A \times B} = (P_1 \times P_2) + i + f$. The product of the sets of places, $(P_1 \times P_2)$, has the projections already, so we need only examine projections for $i$ and $f$.  \todoBA{i and f are new places, so they won't have projections. Does this mean my defn is wrong (need to go back to pairing i's and f's) or that this isn't a product?}
+$P_{A \times B} = (P_1 + P_2) + \{i\} + \{f\}$. The product of the sets of places, $(P_1 \times P_2)$, has the projections already, so we need only examine projections for $i$ and $f$.  \todoBA{if i and f are new places, they won't have projections. As pairs they do. Does this mean my defn is wrong (need to go back to pairing i's and f's) or that this isn't a product?}
 T = $(T_1 \times T_2) + \{start\} +\{end\}$. The product of the sets of transitions has projections already, so we can focus on $start$ and $end$. 
 \end{proof} 
 \begin{definition}
   \label{def:SIMP-AND-PN}
   Given two CNETs, $N_1= (P_1, T_1, \mathsf{src_1}, \mathsf{tar_1}, i_1, f_1)$ and $N_2= (P_2, T_2, \mathsf{src_2}, \mathsf{tar_2}, i_2, f_2)$, their \textbf{simple conjunction} is $N_1 ? N_2$, where: 
 \begin{itemize}
-\item The initial place $i$ is a new place.
+\item The initial place $i$ is a new place.\todoBA{ I could also make this the union of the initial places, and make the final place the pair of the final places to ensure that both complete in some order. Maybe this is preferable to adding new elements all the time?}  
 \item The final place $f$ is a new place.
 \item The beginning transition $start = (i \to (i_1, i_2)$. \todoBA{bc need to start both branches} 
 \item The ending transition $end = ((f_1, f_2) \to f)$. \todoBA{bc need to finish both branches}

@@ -82,7 +82,7 @@
 \end{definition}
 We will denote a Petri net $(S, T, \mathsf{src},
 \mathsf{tar},\_^{\oplus},\emptyset,\oplus)$ by the pair $(S^\oplus,T)$ for
-readability. Also, for $t \in T | \mathsf{src(t)} = s_A , \mathsf{tar(t)} = s_B$, we will use the notation $t = (s_A \rightarrow s_B)$ for clarity and conciseness. 
+readability. Also, for $t \in T such that \mathsf{src(t)} = s_A and \mathsf{tar(t)} = s_B$, we will use the notation $t : s_A \rightarrow s_B$ for clarity and conciseness. 
 %%\todoHE{Please be consistent with denoting Peti nets.  For example, see the next lemma.}
 %
 %\begin{definition}
@@ -177,11 +177,11 @@ Since $(S_1 ^\oplus \times S_2 ^\oplus) \leftrightarrow (S_1 + S_2)^\oplus$, we 
   \label{Chainable-Petri-Net}
   A \textbf{chainable Petri net}, $(S^\oplus, T, i, f, start, end)$ is a Petri net with the following additional features: 
   \begin{itemize}
-  \item An element of $S, i \in S,$ called the initial place. This is the starting point of the net.
-  \item An element of $S, f \in S,$ called the final place. This marks the completion of the net.
-  \item An element of $T, start \in T,$ called the starting transition of the net. If the initial marking is $(s_1 \oplus s_2 ... \oplus s_n)$, then $\mathsf{src}(start) = i,$ and $\mathsf{tar}(start) = (s_1 \oplus s_2 ... \oplus s_n)$, with elements not duplicated: $s_j \neq s_k$ when $j \neq k$. %\todoHE{I see what you are doing here, but when you define new morphisms you have to do it by modifying $\mathsf{src}$ and $\mathsf{tar}$}
-  \item An element of $T, end \in T,$ that is the end transition of the net. If the final marking is $(s_1 \oplus s_2 ... \oplus s_n)$, $\mathsf{src}(end) = (s_1 \oplus s_2 ... \oplus s_n)$, and $\mathsf{tar}(end) = f$. 
-   \item Morphisms for chainable nets must preserve both $start$ and $end$, and their associated places $i$ and $f$. So, a morphism $<a,b>: (N, start, end) \to (N', start', end')$ is an ordinary net morphism that preserves the markings $b(start) = start'$ and $b(end) = end'$.\todoBA{does the preservation of i and f need to be explicit or is it implied already?} 
+  \item A set drawn from $S, \{i_1, i_2, ... i_n\} \in S,$ called the initial places. This is the starting point of the net.
+  \item A set drawn from $S, \{f_1, f_2, ... f_n\} \in S,$ called the final places. This marks the completion of the net.
+  \item A set drawn from $T, \{start_1, start_2... start_n\} \in T,$ called the starting transitions of the net. If the initial marking is $(s_1 \oplus s_2 ... \oplus s_n)$, then $\mathsf{src}\{start\} = \{i\},$ and $\mathsf{tar}\{start\} = (s_1 \oplus s_2 ... \oplus s_n)$, with elements not duplicated: $s_j \neq s_k$ when $j \neq k$. %\todoHE{I see what you are doing here, but when you define new morphisms you have to do it by modifying $\mathsf{src}$ and $\mathsf{tar}$}
+  \item A set drawn from $T, \{end\} \in T,$ called the end transitions of the net. If the final marking is $(s_1 \oplus s_2 ... \oplus s_n)$, $\mathsf{src}(end) = (s_1 \oplus s_2 ... \oplus s_n)$, and $\mathsf{tar}(end) = f$. 
+   \item Morphisms for chainable nets must preserve both $start$ and $end$, and their associated sets of places $i$ and $f$. So, a morphism $<a,b>: (N, start, end) \to (N', start', end')$ is an ordinary net morphism that preserves the markings $b(start) = start'$ and $b(end) = end'$.\todoBA{does the preservation of i and f need to be explicit or is it implied already? And, do the morphisms make sense now that these things are sets instead of individual things?} 
  \end{itemize}
 \end{definition}
 The chainable petri net, or CNET, is a petri net that tracks both its initial and its final places, to facilitate chaining the petri net together with other petri nets at either end. This enables the use of operators such as OR, SEQ, \& AND.\\
@@ -314,13 +314,12 @@ marking.
   \label{def:OR-PN}
   Given two CNETs, $N_1= (S_1^\oplus, T_1, i_1, f_1, start_1, end_1)$ and $N_2= (S_2^\oplus, T_2, i_2, f_2, start_2, end_2)$, their \textbf{disjunction} is $N_1 + N_2$, where:  
   \begin{itemize}
-  \item The initial place $i_{1+2} = (i_1, i_2)$.
-  \item The final place $f_{1+2}$ is a new place.\todoBA{this could be f1 + f2, which would preserve coproductness ASK}
-  \item The start transition $start_{1+2} = (start_1, start_2)$.
-  \item The end transition $end_{1+2} = \{(f_1 \to f_{1+2})\} + \{(f_2 \to f_{1+2})\}$ 
-  \item S = $S_1 + S_2 + \{i_{1+2}\} + \{f_{1+2}\}$ 
-  \item T = $T_1 + T_2 + \{(f_1 \to f_{1+2}), (f_2 \to f_{1+2})\}$.
-  \todoBA{Fixed? but the end transition is actually a set of transitions. They do not all have to complete; I think they work correctly as defined. not sure the notation is OK, CONFIRM WITH DR. EADES. } 
+  \item The set of initial places $i_{1+2} = i_1 \times i_2$.
+  \item The set of final places $f_{1+2} = f_1 + f_2$.
+  \item The start transition $start_{1+2} = start_1 \times start_2$.
+  \item The end transition $end_{1+2} = end_1 + end_2$\todoBA{does this make sense?} 
+  \item S = $S_1 + S_2 + i_{1+2} + f_{1+2}$ \todoBA{is f1+2 really necessary here? already in S1 + S2}
+  \item T = $T_1 + T_2$.
   \item $[\mathsf{src_1}, \mathsf{src_2}], [\mathsf{tar_1}, \mathsf{tar_2}]: T\to S^\oplus$. \todoBA{don't think we need this in short notation, ASK}
   \end{itemize}  
   The pair of the initial places of the disjuncts is the initial place of the new net, and likewise the starting transition is the pair of the disjuncts' starting transitions. This way, each branch of the disjunction
@@ -361,7 +360,7 @@ Let $A = (P_A, T_A, \mathsf{src_A}, \mathsf{tar_A}, i_A, f_A)$ and $B = (P_B, T_
 Let us define $i_0$ and $i_1$, which are injections for Petri nets. We will take it by parts for clarity.\\
 $P_{A+B} = (P_A +P_B+\{(i_A, i_B)\} +\{f_A\} + \{f_B\})$\\
 The coproduct of sets of places has the injective functions already, which covers all the constituents except the initial places. For the initial places, $i_A \to i_A \times i_B$ and $i_B \to i_A \times i_B$ just maps the individual initial place to the pair of initial places, using the position in the pair to indicate whether it is $i_A$ or $i_B$.\\
-$T_{A+B} = T_A + T_B$, so again we can use the coproduct of sets to obtain the injective functions for this part of the net.\\ %\todoBA{this is not following the definition- check and see note above}
+$T_{A+B} = T_A + T_B$, so again we can use the coproduct of sets to obtain the injective functions for this part of the net.\\ 
 $[\mathsf{src_1}, \mathsf{src_2}], [\mathsf{tar_1}, \mathsf{tar_2}]: T\to P^\oplus$. These functions already respect set membership, and so their injective function is also clear. Since these composite pieces are all coproducts, we can rely on their injections to yield the injections of the larger structure.\smallskip\\ 
 Now, suppose we have another CNET C and morphisms $f: A\to C$ and $g: B\to C$; we define $h$ as follows:\\
   \begin{equation}
@@ -385,14 +384,14 @@ This provides a morphism as required, showing that the CNET disjunction is a cop
 \end{proof}
 \begin{definition}
   \label{def:SYNC-AND-PN}
-   Given two CNETs, $N_1= (P_1, T_1, \mathsf{src_1}, \mathsf{tar_1}, i_1, f_1)$ and $N_2= (P_2, T_2, \mathsf{src_2}, \mathsf{tar_2}, i_2, f_2)$, their \textbf{synchronous conjunction} is $N_1 \times N_2$, where: 
+   Given two CNETs, $N_1= (P_1, T_1, \mathsf{src_1}, \mathsf{tar_1}, i_1, f_1)$ and $N_2= (P_2, T_2, \mathsf{src_2}, \mathsf{tar_2}, i_2, f_2)$, their \textbf{synchronous conjunction} is $N_1 \talloblong N_2$, where: 
 \begin{itemize}
-\item The initial place $i = (i_1, i_2)$.
-\item The final place $f = (f_1, f_2)$.\todoBA{should the final place be a pair or does it need to be single?}
-\item The beginning transition $start = (start_1, start_2)$. 
-\item The ending transition $end = (end_1, end_2)$.
-\item P = $P_1 + P_2$.
-\item T = $(T_1 \times T_2)$.
+\item The initial place $i = i_1 \times i_2$.
+\item The final place $f = f_1 \times f_2$.
+\item The beginning transition $start = start_1 \times start_2$. 
+\item The ending transition $end = end_1 \times end_2$.
+\item P = $P_1 \times P_2$.
+\item T = $T_1 \times T_2$.
 \item $[\mathsf{src_1}, \mathsf{src_2}], [\mathsf{tar_1}, \mathsf{tar_2}]: T\to P^\oplus$. \todoBA{Do I need this part?}
 \end{itemize}
 The initial place of synchronous conjunction is the pair of initial places from the two branches. This ensures that each branch will be reached initially. The conjunction's places are formed by pairing the places of the two branches. The transitions are likewise paired, effecting the synchronization necessary for this operation. Finally, the $end$ transition has the pair of final places from each branch as its source, requiring that both complete in order to activate the transition to the final place of the conjunction, which is the target of $end$. 
@@ -400,10 +399,10 @@ The initial place of synchronous conjunction is the pair of initial places from 
 \todoBA{Probably should prove that this is synchronous. How can I do that?}
 \begin{lemma}
 \label{lemma:SYNC-AND-PRODUCT}
-The synchronous conjunction of two CNETs, $A \times B$, is a product.
+The synchronous conjunction of two CNETs, $A \talloblong B$, is a product.
 \end{lemma}
 \begin{proof}
-$N_1 \times N_2$ is a product if it has morphisms $i_1: A \times B \to A$ and $i_2: A \times B \to B$ such that for any object C with morphisms $f: C\to A$ and $g: C\to B$, there is a unique morphism $h: C \to A \times B$ such that $f =h; i_1$ and $g = h;i_2$, meaning that this diagram commutes:\\
+$N_1 \talloblong N_2$ is a product if it has morphisms $i_1: A \times B \to A$ and $i_2: A \times B \to B$ such that for any object C with morphisms $f: C\to A$ and $g: C\to B$, there is a unique morphism $h: C \to A \times B$ such that $f =h; i_1$ and $g = h;i_2$, meaning that this diagram commutes:\\
 \begin{center}
   \begin{math}
     \bfig
@@ -420,25 +419,67 @@ $N_1 \times N_2$ is a product if it has morphisms $i_1: A \times B \to A$ and $i
     \efig
   \end{math}
 \end{center}
-Let $A = (P_A, T_A, \mathsf{src_A}, \mathsf{tar_A}, i_A, f_A)$ and $B = (P_B, T_B, \mathsf{src_B}, \mathsf{tar_B}, i_B, f_B)$, and take $A \times B$.\\
+Let $A = (P_A, T_A, \mathsf{src_A}, \mathsf{tar_A}, i_A, f_A)$ and $B = (P_B, T_B, \mathsf{src_B}, \mathsf{tar_B}, i_B, f_B)$, and take $A \talloblong B$.\\
 Let us define $i_1$ and $i_2$, which are projections for Petri nets. We will take it by parts for clarity.\\
-$P_{A \times B} = (P_1 + P_2) + \{i\} + \{f\}$. The product of the sets of places, $(P_1 \times P_2)$, has the projections already, so we need only examine projections for $i$ and $f$.  \todoBA{if i and f are new places, they won't have projections. As pairs they do. Does this mean my defn is wrong (need to go back to pairing i's and f's) or that this isn't a product?}
-T = $(T_1 \times T_2) + \{start\} +\{end\}$. The product of the sets of transitions has projections already, so we can focus on $start$ and $end$. 
+$P_{A \talloblong B} = (P_1 \times P_2) + i + f$. The product of the sets of places, $(P_1 \times P_2)$, has the projections already, so we need only examine projections for $i$ and $f$. $i =  (i_A \times i_B)$ and $f =  (f_A \times f_B)$, so both of these already have the projections as well.
+T = $(T_1 \times T_2) + start + end$. The product of the sets of transitions has projections already, so we can focus on $start$ and $end$. Similarly, because these are the products of the start of A and B and the end of A and B, they also have the necessary projections. Thus, the synchronous conjunction is a product.
 \end{proof} 
+\begin{example}
+  \label{ex:STEP-AND-PN}
+Next let us examine another type of AND in CNETs, Step AND. We will construct this formally using a combination of SEQ and OR.
+\end{example}
 \begin{definition}
-  \label{def:SIMP-AND-PN}
-  Given two CNETs, $N_1= (P_1, T_1, \mathsf{src_1}, \mathsf{tar_1}, i_1, f_1)$ and $N_2= (P_2, T_2, \mathsf{src_2}, \mathsf{tar_2}, i_2, f_2)$, their \textbf{simple conjunction} is $N_1 ? N_2$, where: 
+  \label{def:STEP-AND-PN}
+  Given two CNETs, $N_1= (P_1, T_1, \mathsf{src_1}, \mathsf{tar_1}, i_1, f_1)$ and $N_2= (P_2, T_2, \mathsf{src_2}, \mathsf{tar_2}, i_2, f_2)$, their \textbf{simple conjunction} is $N_1 \wedge N_2$ = $(N_1 ; N_2) + (N_2 ; N_1)$. \\
+Let us take it by parts for clarity, starting with the first disjunct:
 \begin{itemize}
-\item The initial place $i$ is a new place.\todoBA{ I could also make this the union of the initial places, and make the final place the pair of the final places to ensure that both complete in some order. Maybe this is preferable to adding new elements all the time?}  
-\item The final place $f$ is a new place.
-\item The beginning transition $start = (i \to (i_1, i_2)$. \todoBA{bc need to start both branches} 
-\item The ending transition $end = ((f_1, f_2) \to f)$. \todoBA{bc need to finish both branches}
-\item P = $P_1 + P_2$ + i + f.
-\item T = $T_1 + T_2 + \{start\} +\{end\}$.
-\item $[\mathsf{src_1}, \mathsf{src_2}], [\mathsf{tar_1}, \mathsf{tar_2}]: T\to P^\oplus$. 
-\end{itemize}
-The starting transition of simple conjunction goes from the conjunction's initial place to the initial places of each branch. The conjunction's places are the disjoint union of the places of each conjunct, and the transitions are similarly the disjoint union of each conjunct, enabling the branches to complete in any order. However, both branches must complete for the conjunction's final place to be reached because of the $end$ transition's source and target.      
+ \item $P_{N_1;N_2} = P_1 + P_2.$
+ \item $T_{N_1;N_2} = T_1 + T_2 + \{(f_1 \to i_2)\}$.
+ \item $i_{N_1;N_2} = i_1$.
+ \item $f_{N_1;N_2} = f_2$.
+ \item $start_{N_1;N_2} = start_1.$
+ \item $end_{N_1;N_2} = end_2. $
+\end{itemize} 
+Now let us move on to the second disjunct:
+\begin{itemize}
+ \item $P_{N_2;N_1} = P_1 + P_2.$
+ \item $T_{N_2;N_1} = T_1 + T_2 + \{(f_2 \to i_1)\}$.
+ \item $i_{N_2;N_1} = i_2$.
+ \item $f_{N_2;N_1} = f_1$.
+ \item $start_{N_2;N_1} = start_2.$
+ \item $end_{N_2;N_1} = end_1. $
+\end{itemize} 
+Now we can compute the disjunction of these sequences, (with duplication omitted):
+\begin{itemize}
+ \item $P_{N_1;N_2 + N_2;N_1} = P_1 + P_2.$
+ \item $T_{N_1;N_2 + N_2;N_1} = T_1 + T_2 + \{(f_1 \to i_2)\} + \{(f_2 \to i_1)\}$.
+ \item $i_{N_1;N_2 + N_2;N_1} = i_1 \times i_2$.
+ \item $f_{N_1;N_2 + N_2;N_1} = f_2 + f_1$.
+ \item $start_{N_1;N_2 + N_2;N_1} = start_1 \times start_2.$
+ \item $end_{N_1;N_2 + N_2;N_1} = end_2 + end_1. $
+\end{itemize} 
+The development of this connective using SEQ and OR means that both must complete, in either order, to activate the next transition. However, this connective does not allow for partial progress on one, and then partial progress on the other. This problem, called interleaving, is addressed with the next connective.
 \end{definition}
+
+Real AND?
+Consider an ordinary Petri net $(S^\oplus, T)$. A simple model of the conjunction $s_1$ AND $s_2$ is given by the following relations:
+  \begin{itemize}
+  \item Let $S = \{s_1, s_2, s_3\}$, and $T = \{((s_1, s_2) \to s_3)\}$. 
+  \item Given this relation, $s_1$ and $s_2$ must both be activated for $s_3$ to be activated. 
+  \item If either $s_1$ or $s_2$ remain inactive, $s_3$ will also remain inactive.  
+  \end{itemize}
+
+Within a single Petri net, we can see that conjunction is modeled graphically by two places feeding into one transition. Both places must be occupied for the transition to fire. CNET conjunction has an initial element that this basic understanding does not capture - the two places can become occupied in any order. It is important to note this because Petri nets execute over time, so both structure and order matter. Essentially the two conjuncts should remain independent of each other during their execution, only interacting at the end to verify their conjunction.
+\begin{itemize}
+\item $S = S_1 + S_2$
+\item $P= P_1 + P_2$
+\item $T = T_1 + T_2$
+\item $start = start_1 + start_2$
+\item $end = end_1 + end_2$
+\item $i = i_1 \times i_2$
+\item$f = f_1 \times f_2$
+\end{itemize}
+
 \newpage
 Example nets:
 %

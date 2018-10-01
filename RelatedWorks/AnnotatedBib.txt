@@ -1,0 +1,58 @@
+Category Theory Related Articles
+
+Baez_Master_2018
+
+In this paper, the authors define Open Petri nets as Petri nets with the addition of designated input and output places in order to study the reachability semantics of Petri nets, a way of calculating what outputs are possible given some inputs to a Petri net. They follow the work of Meseguer and Montanari in looking at Petri nets as symmetric monoids, but further develop the application of category theory to Petri nets by understanding Open Petri nets as a double category, which allows them to ???not sure exactly, need to read and think some more??? The authors' notion of an Open Petri net, with input and output places, is similar to our CNETs, though they are concerned with a different problem. We formulated CNETs to build up attack trees, whereas their concern is with reachability in a pre-existing net. Thus their work and ours is complementary; their reachability semantics is a powerful tool to analyze the CNETs we can build. 
+
+
+Meseguer_Montanari_1990
+
+The authors take a category-theoretical approach to study concurrency in Petri net models. Making the point that Petri nets can be understood as directed graphs, they introduce a category for Petri nets generally, and also for pointed Petri nets, which have an initial marking to show the beginning of the net. They also work through the categorical product and coproduct for Petri nets, and show that Petri nets are monoids where the objects are the places and the relation is given by the transitions. Our work builds on theirs by continuing the categorical approach. We also built upon their pointed Petri net to define our CNET, which is a Petri net with both a start and end place to allow for chaining. They develop two operators for the pointed Petri net, $/oplus$ and $;$, which we further developed for our CNET operators AND and SEQ, respectively.  
+
+
+SassoneSurvey
+
+In this paper, the author surveys his own contributions to algebraic, compositional approaches to the semantics of Petri nets, approaches that, broadly speaking, develop a view of Petri nets as complex structures built up from simple parts and a limited number of connection types, or combinators. The author follows the development of the field from its beginnings, starting with the application of process algebras and categorical algebra to Petri nets. In particular, his research has focused on concatenable Petri nets, and ultimately has followed Meseguer and Montanari, 1990 into the categorical approach to Petri nets (as monoidal categories). This paper provides a helpful and thorough history of ideas that our paper builds upon. We take a very similar approach to solving the problem of applying Petri nets to attack trees, but Sassone is not concerned with this specific problem. 
+
+
+Sassone_1994
+
+In this paper, Sassone adds to the categorical understanding of Petri nets, building on the conceptualization of concatenable processes as morphisms (or what he calls "arrows") of a symmetric monoid. He discusses the complications of concatenating processes when done by merging the first net's maximal places (the final marking in our paper) with the next net's minimal places (what we call the initial marking). The difficulty arises because the place-to-place correspondence can be done in multiple ways, resulting in different concatenation behaviors. His solution to this problem is to focus on the tokens that move through the net, rather than the places.  Within this line of reasoning,  he points out that the category of the concatenable processes of a net are themselves a symmetric monoidal category with a tensor product yielding the parallel composition of processes, which in turn shows that Petri net behavior can be understood algebraically. He proposes to take the work of Deguano, Meseguer, and Montanari (1989) and make it completely abstract and axiomatic by establishing a category of symmetries of the Petri net category. While this research is not concerned strictly with what we are examining, it provides some helpful insights into concatenation and parallelization in Petri nets viewed categorically.
+
+
+Bruni, Meseguer, Montanari, Sassone 2001
+
+This is very deep into category theory and I don't understand it enough yet. Need to return to this article.
+According to the authors' interpretation of the field, the research into the semantics of place/transition Petri nets can be divided into two camps: collective and individual token philosophies. Whereas the collective side does not distinguish between different instances of tokens at the same place, reasoning that what really matters is whether a token occupies the place or not (i.e. for the firing of the next transition), the individual side does pay attention to the particulars of the token - especially as its identity relates to its causal history. The authors identify an issue with the algebraic semantics of place/transition Petri nets interpreted under the individual token philosophy, showing that it lacks universality and functoriality. To address this, they introduce the idea of pre-nets, whose states are strings of tokens (which are total orders) rather than the multisets we use in our work. However, our understanding of Petri nets is strongly based on pomsets as expressive of a particular path through the net, and so their pre-nets and the associated category-theoretical apparatuses might prove useful to us. Furthermore, our research falls more into the individual token philosophy, so our theory may be vulnerable to the weakness they describe and repair with the pre-net. This article may prove important in the theory of our paper, but our paper has a narrower application and develops the theory of Petri nets in a direction that they do not explore.
+
+
+Petri Nets Non-categorically
+
+
+
+Modeling Attack Trees as Petri Nets
+
+McDermott "Attack Net Penetration Testing"
+
+The author provides a brief introduction into penetration testing to discover potential attacks on a system, and discusses two approaches: flaw hypothesis and attack tree. Flaw hypothesis analyzes a system within a particular scope, generates hypothetical flaws and then tests for them, using any confirmed flaws as a basis for generalization (to find similar flaw patterns in other areas of the system) and further testing. Finally, any confirmed flaws are eliminated. The attack tree approach uses a tree graph with the goal as the root, and then the steps to achieving the goal as the branches and/or leaves. In this paper, McDermott proposes organizing an attack tree more formally as a Petri net, with places representing states of the system, and transitions representing actions or events that cause a change in state. He describes the attack net approach as contributing several strengths to penetration testing: modeling concurrency and the current state of an attack with tokens, showing intermediate goals more clearly as places, and shoing the cumulative effects of different avenues of attack on the whole system. This is clearly a foundational article for our research. Besides establishing the central idea of modeling attack trees as Petri nets, this article also suggests important features for our system that we have worked to incorporate, such as using a flaw database to pattern-match attacks, and building up nets from simple attacks to more complex ones. Our work develops the central idea more specifically through our models of different connectives and our use of category theory, but this article is invaluable as a basis for our further efforts.
+ 
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+

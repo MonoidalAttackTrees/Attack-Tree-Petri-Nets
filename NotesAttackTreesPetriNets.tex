@@ -426,11 +426,11 @@ T = $(T_1 \times T_2) + start + end$. The product of the sets of transitions has
 \end{proof} 
 \begin{example}
   \label{ex:STEP-AND-PN}
-Next let us examine another type of AND in CNETs, Step AND. We will construct this formally using a combination of SEQ and OR.
+Next let us examine another type of AND in CNETs, Stepwise AND. We will construct this formally using a combination of SEQ and OR.
 \end{example}
 \begin{definition}
   \label{def:STEP-AND-PN}
-  Given two CNETs, $N_1= (P_1, T_1, \mathsf{src_1}, \mathsf{tar_1}, i_1, f_1)$ and $N_2= (P_2, T_2, \mathsf{src_2}, \mathsf{tar_2}, i_2, f_2)$, their \textbf{simple conjunction} is $N_1 \wedge N_2$ = $(N_1 ; N_2) + (N_2 ; N_1)$. \\
+  Given two CNETs, $N_1= (P_1, T_1, \mathsf{src_1}, \mathsf{tar_1}, i_1, f_1)$ and $N_2= (P_2, T_2, \mathsf{src_2}, \mathsf{tar_2}, i_2, f_2)$, their \textbf{stepwise conjunction} is $N_1 \wedge N_2$ = $(N_1 ; N_2) + (N_2 ; N_1)$. \\
 Let us take it by parts for clarity, starting with the first disjunct:
 \begin{itemize}
  \item $P_{N_1;N_2} = P_1 + P_2.$
@@ -458,20 +458,23 @@ Now we can compute the disjunction of these sequences, (with duplication omitted
  \item $start_{N_1;N_2 + N_2;N_1} = start_1 \times start_2.$
  \item $end_{N_1;N_2 + N_2;N_1} = end_2 + end_1. $
 \end{itemize} 
-The development of this connective using SEQ and OR means that both must complete, in either order, to activate the next transition. However, this connective does not allow for partial progress on one, and then partial progress on the other. This problem, called interleaving, is addressed with the next connective.
+The development of this connective using SEQ and OR means that both must complete, in either order, to activate the next transition. However, this connective does not allow for partial progress on one, and then partial progress on the other. This feature, called interleaving, is accomplished with the next connective.
 \end{definition}
 
-Real AND?
+\begin{example}
+  \label{ex:SIMP-AND-PN}
 Consider an ordinary Petri net $(S^\oplus, T)$. A simple model of the conjunction $s_1$ AND $s_2$ is given by the following relations:
   \begin{itemize}
   \item Let $S = \{s_1, s_2, s_3\}$, and $T = \{((s_1, s_2) \to s_3)\}$. 
   \item Given this relation, $s_1$ and $s_2$ must both be activated for $s_3$ to be activated. 
   \item If either $s_1$ or $s_2$ remain inactive, $s_3$ will also remain inactive.  
   \end{itemize}
-
-Within a single Petri net, we can see that conjunction is modeled graphically by two places feeding into one transition. Both places must be occupied for the transition to fire. CNET conjunction has an initial element that this basic understanding does not capture - the two places can become occupied in any order. It is important to note this because Petri nets execute over time, so both structure and order matter. Essentially the two conjuncts should remain independent of each other during their execution, only interacting at the end to verify their conjunction.
+Within a single Petri net, we can see that conjunction is modeled graphically by two places feeding into one transition. Both places must be occupied for the transition to fire. Accomplishing the conjunction of more complex processes has long been a subject of debate, with the two main approaches being true concurrency and interleaving. The initial and final places that define the CNET help to resolve this difficulty. By pairing the initial places of each conjunct, we ensure that each thread in the conjunction begins to fire. Then, by taking the disjoint union of the transitions and places of each conjunct, we allow the two threads to complete in any order (while still following the flow relation of each thread). The threads could even make partial progress, first part of one and then part of the other. We verify that each thread has completed (fulfilling the necessary condition for conjunction) by pairing the final places in the conjunction.This construction allows the two conjuncts to remain independent of each other during their execution, with the initial and final places creating the conjunction. 
+\end{example}
+\begin{definition}
+  \label{def:SIMP-AND-PN}
+  Given two CNETs, $N_1= (P_1, T_1, \mathsf{src_1}, \mathsf{tar_1}, i_1, f_1)$ and $N_2= (P_2, T_2, \mathsf{src_2}, \mathsf{tar_2}, i_2, f_2)$, their \textbf{simple conjunction} is $N_1 \amalg N_2$ where: \\
 \begin{itemize}
-\item $S = S_1 + S_2$
 \item $P= P_1 + P_2$
 \item $T = T_1 + T_2$
 \item $start = start_1 + start_2$
@@ -479,7 +482,43 @@ Within a single Petri net, we can see that conjunction is modeled graphically by
 \item $i = i_1 \times i_2$
 \item$f = f_1 \times f_2$
 \end{itemize}
-
+\end{definition}
+\begin{lemma}
+\label{lemma:REAL-AND-TENSOR-PRODUCT}
+The simple conjunction of two CNETs, $A \amalg B$, is a tensor product.
+\end{lemma}
+\begin{proof}
+To be a tensor product, simple conjunction must be both commutative and associative. First, let us check commutativity.
+Let $A = (P_A, T_A, \mathsf{src_A}, \mathsf{tar_A}, i_A, f_A)$ and $B = (P_B, T_B, \mathsf{src_B}, \mathsf{tar_B}, i_B, f_B)$, and take $A \amalg B$.\\ 
+\begin{itemize}
+\item $P_{A \amalg B}= P_A + P_B$
+\item $T_{A \amalg B} = T_A + T_B$
+\item $start_{A \amalg B} = start_A + start_B$
+\item $end_{A \amalg B} = end_A + end_B$
+\item $i_{A \amalg B} = i_A \times i_B$
+\item$f_{A \amalg B} = f_A \times f_B$
+\end{itemize}
+Now, let us compare this to ${B \amalg A}$.
+\begin{itemize}
+\item $P_{B \amalg A}= P_B + P_A$
+\item $T_{B \amalg A} = T_B + T_A$
+\item $start_{B \amalg A} = start_B + start_A$
+\item $end_{B \amalg A} = end_B + end_A$
+\item $i_{B \amalg A} = i_B \times i_A$
+\item$f_{B \amalg A} = f_B \times f_A$
+\end{itemize}
+The places, transitions, and start/end are all equivalent by virtue of the commutativity of disjoint union. While the paired initial places are reversed, in this context the reversed pairs are equivalent because either way the places are joined together, ensuring that they will both be activated once the conjunction is activated. Similarly, the paired final places are joined together to ensure that the conjunction does not complete until both branches complete. Thus, the simple conjunction is commutative.\todoBA{Can I do this to the Cartesian product, or should I change the construction?}
+Now let us check for associativity. If, in addition to A and B above, we have a third CNET C. Let $C = (P_C, T_C, \mathsf{src_C}, \mathsf{tar_C}, i_C, f_C)$ and take $(A \amalg B)\amalg C$.
+\begin{itemize}
+\item $P_{(A \amalg B)\amalg C}= (P_A + P_B) + P_C$
+\item $T_{(A \amalg B)\amalg C} = (T_A + T_B)+ T_C$
+\item $start_{(A \amalg B)\amalg C} = (start_A + start_B) + start_C$
+\item $end_{(A \amalg B)\amalg C} = (end_A + end_B) + end_B$
+\item $i_{(A \amalg B)\amalg C} = (i_A \times i_B)\times i_C$
+\item$f_{(A \amalg B)\amalg C} = (f_A \times f_B)\times f_C$\todoBA{how can I accomplish the same thing without pairing? Pairing is getting in the way of both associativity and commutativity, and these properties should hold for AND anyway, regardless of the tensor product.}
+\end{itemize}
+\end{proof}
+***this is possible because it is chainable - otherwise a big mess. So this is a tensor product, need to prove associativity and commutativity. Note this in introduction. Also look up symmetric monoidal category for monoidal tensor product not just tensor product. ***
 \newpage
 Example nets:
 %
@@ -545,4 +584,4 @@ Clearly,$ G \circ F = F \circ G,$ since F removes the origin markings  \{1\} and
 % subsection MeseguerMontanari (end)
 
 
-\cite{Benton:2018:SEC:3236950.3236975}
+

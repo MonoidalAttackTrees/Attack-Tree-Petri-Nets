@@ -507,18 +507,71 @@ Now, let us compare this to ${B \amalg A}$.
 \item $i_{B \amalg A} = i_B \times i_A$
 \item$f_{B \amalg A} = f_B \times f_A$
 \end{itemize}
-The places, transitions, and start/end are all equivalent by virtue of the commutativity of disjoint union. While the paired initial places are reversed, in this context the reversed pairs are equivalent because either way the places are joined together, ensuring that they will both be activated once the conjunction is activated. Similarly, the paired final places are joined together to ensure that the conjunction does not complete until both branches complete. Thus, the simple conjunction is commutative.\todoBA{Can I do this to the Cartesian product, or should I change the construction?}
-Now let us check for associativity. If, in addition to A and B above, we have a third CNET C. Let $C = (P_C, T_C, \mathsf{src_C}, \mathsf{tar_C}, i_C, f_C)$ and take $(A \amalg B)\amalg C$.
+The places, transitions, and start/end are all equivalent by virtue of the commutativity of disjoint union. While the paired initial places are reversed, in this context the reversed pairs are equivalent because either way the places are joined together, ensuring that they will both be activated once the conjunction is activated. Similarly, the paired final places are joined together to ensure that the conjunction does not complete until both branches complete. Thus, the simple conjunction is commutative.
+Now let us check for associativity. In addition to A and B above, let there be a third CNET C. Let $C = (P_C, T_C, \mathsf{src_C}, \mathsf{tar_C}, i_C, f_C)$ and take $(A \amalg B)\amalg C$.
 \begin{itemize}
 \item $P_{(A \amalg B)\amalg C}= (P_A + P_B) + P_C$
 \item $T_{(A \amalg B)\amalg C} = (T_A + T_B)+ T_C$
 \item $start_{(A \amalg B)\amalg C} = (start_A + start_B) + start_C$
 \item $end_{(A \amalg B)\amalg C} = (end_A + end_B) + end_B$
 \item $i_{(A \amalg B)\amalg C} = (i_A \times i_B)\times i_C$
-\item$f_{(A \amalg B)\amalg C} = (f_A \times f_B)\times f_C$\todoBA{how can I accomplish the same thing without pairing? Pairing is getting in the way of both associativity and commutativity, and these properties should hold for AND anyway, regardless of the tensor product.}
+\item$f_{(A \amalg B)\amalg C} = (f_A \times f_B)\times f_C$
 \end{itemize}
+Now let us take $A \amalg (B\amalg C)$.
+\begin{itemize}
+\item $P_{A \amalg (B\amalg C)}= P_A + (P_B + P_C)$
+\item $T_{A \amalg (B\amalg C)} = T_A + (T_B+ T_C)$
+\item $start_{A \amalg (B\amalg C)} = start_A + (start_B + start_C)$
+\item $end_{A \amalg (B\amalg C)} = end_A + (end_B + end_B)$
+\item $i_{A \amalg (B\amalg C)} = i_A \times (i_B\times i_C)$
+\item$f_{A \amalg (B\amalg C)} = f_A \times (f_B\times f_C)$\todoBA{Check consistency; start and end are not paired, but initial and final are - is that right?}
+\end{itemize}
+Again, the places, transitions, and start/end are all equivalent by virtue of the associativity of disjoint union. The paired initial and final places are isomorphic to one another, as the next proof shows.
 \end{proof}
-***this is possible because it is chainable - otherwise a big mess. So this is a tensor product, need to prove associativity and commutativity. Note this in introduction. Also look up symmetric monoidal category for monoidal tensor product not just tensor product. ***
+\begin{lemma}
+\label{PRODUCT-IS-ASSOCIATIVE}
+ $((A \times B)\times C) \cong (A \times (B\times C))$
+\end{lemma}
+\begin{proof}
+To show this, we must define two homomorphisms between them, which we will call $f$ and $g$. 
+The function $f$ is defined as follows: Taking the second projection of $(A \times B)\times C)$ yields $C$. Taking the first projection of $(A \times B)\times C)$ yields $(A \times B)$. Taking the first projection again yields $A$. Taking the second projection yields $B$. Then, we can rejoin the elements, first taking $B \times C$ and then $(A \times (B\times C)).$ Thus, 
+\begin{center}
+  \begin{math}
+    \begin{array}{lll}
+      f((A \times B)\times C) & = & (A \times (B\times C))\\
+    \end{array}
+  \end{math}
+\end{center}
+Now let us define $g$. Taking the first projection of $(A \times (B\times C))$ yields $A$. Taking the second projection of $(A \times (B\times C))$ yields $(B\times C)$. Taking the first projection of $(B\times C)$ yields $B$. Taking the second projection yields $C$. Then, we can rejoin the elements, first taking $A \times B$ and then $((A \times B)\times C).$ Thus, 
+\begin{center}
+  \begin{math}
+    \begin{array}{lll}
+      g(A \times (B\times C)) & = & ((A \times B)\times C)\\
+    \end{array}
+  \end{math}
+\end{center}
+Finally, let us check that $g;f = Id$ and $f;g=Id$.\\ 
+\begin{center}
+  \begin{math}
+    \begin{array}{lll}
+      f(g(A \times (B\times C))) & = & f((A \times B)\times C)\\
+                                                 & = & (A \times (B\times C))\\
+    \end{array}
+  \end{math}
+\end{center}
+Thus, $g;f = Id$. Likewise,\\
+\begin{center}
+  \begin{math}
+    \begin{array}{lll}
+      g(f((A \times B)\times C)) & = & g(A \times (B\times C))\\
+                                                 & = & ((A \times B)\times C)\\
+    \end{array}
+  \end{math}
+\end{center}
+Thus, $f;g = Id$, and $((A \times B)\times C) \cong (A \times (B\times C))$
+\end{proof}
+
+*** Note this in introduction. Also look up symmetric monoidal category for monoidal tensor product not just tensor product. ***
 \newpage
 Example nets:
 %

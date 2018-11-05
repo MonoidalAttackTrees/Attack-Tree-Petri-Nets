@@ -1,0 +1,16 @@
+ In \cite{doi:10.1093/jigpal/jzu010}, the authors propose an adaptation of propositional dynamic logic for reasoning about Petri nets. Others have translated Petri nets into languages for PDL. In this article, the authors offer a method for using PDL on Petri nets more directly and simply. They first define PDL, which consists of a finite number of proposition symbols with Boolean connectives $\neg$ and $\wedge$, and a finite number of basic programs, with program constructors ; (sequential composition), $\cup$ (non-deterministic choice), and * (iteration), and a modality $\langle \pi \rangle$ for each program $\pi$. Regarding the modality, $\langle \pi \rangle \alpha$ means that after $\pi$ runs, $\alpha$ is true, assuming $\pi$ stops. A transition diagram, also called a frame, defines the semantics for a PDL. 
+\begin{definition}
+\label {PDL-frame} A frame is a tuple $F=(W, R_\pi)$ where:
+\begin{itemize}
+\item W is a non-empty set of states .
+\item $R_a$ is a binary relation over W, for each basic program $a \in \Pi$.
+\item The binary relation $R_\pi$ can be defined inductively for each non-basic program $\pi$:
+\begin{itemize}
+\item $R_{\pi_1;\pi_2} = R_{\pi_1} ; R_{\pi_2}$
+\item $R_{\pi_1\cup\pi_2} = R_{\pi_1} \cup R_{\pi_2}$
+\item $R_{\pi^*}=R_\pi^*$, the reflexive transitive closure of $R_\pi$.
+\end{itemize}
+\end{itemize}
+\end{definition}
+To represent Petri nets in PDL, the authors name the places and transitions, and define three patterns of transitions(representing the simple place to place, the and pattern, and the or pattern) from which more complex structures can be built by composition. Additionally, they define a sequence of names as a notation for tracking progress through a net, denoted as S. They define a firing function $f: S \times \pi_b \rightarrow S$ on pg 6, in which if s contains the preset of the transition, the transition is enabled. This algorithm enforces the flow relation of the Petri net, and I think consumes transitions while keeping places. Then they use this to define axioms which seem to present propositional dynamic logic equations for petri nets. 
+\cite{LOPES201467} 

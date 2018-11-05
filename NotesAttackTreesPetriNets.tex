@@ -1,3 +1,16 @@
+Petri nets are powerful models for processes in many different areas, because they can capture key elements of processes and facilitate reasoning about them. Petri nets help to visualize the dynamics of a system, and support that visualization with mathematical definitions, analysis, and proof. There are many varieties of Petri nets to support many different uses, but the basic Petri net is a structure composed of places and transitions, with arcs between them that capture possible flows or paths through the net. 
+\begin{definition}
+  \label{def:Original-Petri-Net}
+A \textbf{Petri net}, $(P, T, F)$, consists of the following structure:  
+  \begin{itemize}
+  \item A finite set of places $P$,
+  \item A finite set of transitions $T$ that is disjoint from $P$,
+  \item A causal dependency relation $F: (P \times T) + (T \times P) \to \mathbb{N}^+ $, 
+  \end{itemize}
+\end{definition}
+The places track progress through the net by means of markers called tokens, while the transitions enable progress to be made. If a transition has two input places, both inputs must be active (contain tokens) in order for the transition to fire. Similarly, if a transition has two output places, both places will become active once the transition has fired. The transitions consume tokens from their input places and produce tokens in their output places each time their input conditions are satisfied. The input/output relation is captured in $F$, the causal dependency or flow relation. 
+
+As established in \cite{MESEGUER1990105}, Petri nets are monoids. Monoids are structures with objects and an associative binary relation with an identity element. In the case of Petri nets, they are monoids in a twofold way because they are composed of two kinds of things - places and transitions. Multiset union forms a monoid over the places of a Petri net, while composition forms a monoid over the transitions, with the empty set as the identity element for both. 
 \begin{definition}
   \label{def:Finite-Multiset}
   A \textbf{finite multiset} over a set $S$ can be defined as a formal
@@ -20,6 +33,7 @@
   $\emptyset$.
 \end{definition}
 %
+Petri nets fit more generally into the category of graphs.
 \begin{definition}
   \label{def:Graph}
   A \textbf{generalized graph}, $(V, T, \mathsf{src}, \mathsf{tar}, \_^*,I,\otimes)$, consists of the following structure:
@@ -61,16 +75,6 @@
   $g: V_1^{*_1} \to V_2^{*_2}$ is a monoid homomorphism.
 \end{definition}
 
-\begin{definition}
-  \label{def:Original-Petri-Net}
-  Original defn: A \textbf{Petri net}, $(P, T, F, M_0)$, consists of the following structure:  
-  \begin{itemize}
-  \item A finite set of places $P$,
-  \item A finite set of transitions $T$ that is disjoint from $P$,
-  \item A causal dependency relation $F: (P \times T) + (T \times P) \to \mathbb{N}^+ $, 
-  \item An initial marking $M_0$.
-  \end{itemize}
-\end{definition}
 %
 \begin{definition}
   \label{def:Petri-Net}

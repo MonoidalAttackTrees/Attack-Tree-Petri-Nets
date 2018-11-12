@@ -9,8 +9,9 @@ A \textbf{Petri net}, $(P, T, F)$, consists of the following structure:
   \end{itemize}
 \end{definition}
 The places track progress through the net by means of markers called tokens, while the transitions enable progress to be made. If a transition has two input places, both inputs must be active (contain tokens) in order for the transition to fire. Similarly, if a transition has two output places, both places will become active once the transition has fired. The transitions consume tokens from their input places and produce tokens in their output places each time their input conditions are satisfied. The input/output relation is captured in $F$, the causal dependency or flow relation. 
-
-As established in \cite{MESEGUER1990105}, Petri nets are monoids. Monoids are structures with objects and an associative binary relation with an identity element. In the case of Petri nets, they are monoids in a twofold way because they are composed of two kinds of things - places and transitions. Multiset union forms a monoid over the places of a Petri net, while composition forms a monoid over the transitions, with the empty set as the identity element for both. 
+\section{Petri Nets Categorically}
+As established in \cite{MESEGUER1990105}, Petri nets are monoids. Monoids are structures with objects and an associative binary relation with an identity element. In the case of Petri nets, they are monoids in a twofold way because they are composed of two kinds of things - places and transitions. Multiset union forms a monoid over the places of a Petri net, while composition forms a monoid over the transitions, with the empty set as the identity element for both. Viewing Petri nets through this lens allowed us to reason about them more abstractly, and to build complex nets out of simple building blocks using connectives we define. 
+The fact that the places of a Petri net form a free commutative monoid is crucial to our development of these connectives. 
 \begin{definition}
   \label{def:Finite-Multiset}
   A \textbf{finite multiset} over a set $S$ can be defined as a formal
@@ -86,7 +87,7 @@ Petri nets fit more generally into the category of graphs.
 \end{definition}
 We will denote a Petri net $(S, T, \mathsf{src},
 \mathsf{tar},\_^{\oplus},\emptyset,\oplus)$ by the pair $(S^\oplus,T)$ for
-readability. Also, for $t \in T such that \mathsf{src(t)} = s_A and \mathsf{tar(t)} = s_B$, we will use the notation $t : s_A \rightarrow s_B$ for clarity and conciseness. 
+readability. Also, for $t \in T$ such that $\mathsf{src(t)} = s_A$ and $\mathsf{tar(t)} = s_B$, we will use the notation $t : s_A \rightarrow s_B$ for clarity and conciseness. 
 %%\todoHE{Please be consistent with denoting Peti nets.  For example, see the next lemma.}
 %
 %\begin{definition}

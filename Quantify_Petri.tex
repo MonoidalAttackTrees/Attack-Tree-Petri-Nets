@@ -1,0 +1,24 @@
+ \cite{ZIMMERMANN2008} is not that informative but a good overview.
+\cite{10.1007/978-3-642-00596-1_25} develops a Priced Timed Petri Net, which is a workflow net (that has the in/out places like our CNETs) with the added features of cost and time-weighted transitions. Gives detailed algorithms for methods of calculating net cost with one or many final places, with nets that have added features like timed transitions and tokens, inhibitor/enabler functionality, etc. 
+\begin{itemize}
+\item Define a valuation function $V: T \rightarrow \mathbb {R}$ that associates a cost with each transition.
+\item Define a calculation function $C_V$ that combines these values. 
+\begin{itemize}
+\item For cost or time calculation, this should be a straightforward sum of all the transitions on each possible path. If more than one possible path exists, could give the range. 
+\end{itemize}
+\item From each leaf, calculate all possible paths to the root. This is called a reachability graph.
+\item Let $\{t_0, ..., t_n\}$ be the transitions that fire along a path from a leaf to the root.
+\item $C_V = \sum_{i=0}^{n} V(t_i)$
+\item Apply the valuation function and the calculation function, may need a way to decide between paths or can give a range if multiple values.
+\end{itemize}
+
+For probability, \cite{Lautenbach} define Probability Propagation Nets, which assign a probability to each transition (among other things not relevant to our concerns).
+\begin{itemize}
+\item Define a probability function $P: T \rightarrow \mathbb {R}$ that associates a probability with each transition.
+\item Define a calculation function $C_P$ that combines these values. 
+\item From each leaf, calculate the reachability graph.
+\item Let $\{t_0, ..., t_n\}$ be the transitions that fire along a path from a leaf to the root.
+\item $C_P = \prod_{i=0}^{n} P(t_i)$
+\end{itemize}
+Note that the reachability tree , basically calculating all the possible paths and picking the shortest one, is a complex problem in itself. There are resources giving different algorithms to efficiently find the shortest path.
+\cite{LOPES201467} 

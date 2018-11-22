@@ -1,4 +1,9 @@
-Petri nets are powerful models for processes in many different areas, because they can capture key elements of processes and facilitate reasoning about them. Petri nets help to visualize the dynamics of a system, and support that visualization with mathematical definitions, analysis, and proof. There are many varieties of Petri nets to support many different uses, but the basic Petri net is a structure composed of places and transitions, with arcs between them that capture possible flows or paths through the net. 
+\section{Attack Trees} 
+Attack trees were first described by \cite{Schneier1999}, and have become a widely-used tool for modeling both attacker behavior and system vulnerabilities \cite{Pudar:2009:PPM:2639527.2639705}. Attack trees are constructed by placing the ultimate goal, compromise of the resource, at the root, and then dividing it into smaller and smaller sub-goals, which populate the branches and leaves of the tree. In this way, each path up the tree becomes a possible way to achieve the ultimate goal. The tree nodes are joined with logical connectives such as conjunction and disjunction. In the case of conjunction (AND), both children must be accomplished in order for the parent to be accomplished. In the case of disjunction (OR), at least one of the children must be accomplished for the attack to progress to the parent. Attack trees also make use of sequential connectives, which lay out the steps to a goal in a defined order.  
+\par Attack trees are useful because they encourage the defender to think like an attacker. They focus attention on the vulnerabilities, and force defenders to analyze the possible exploitations of these vulnerabilities and the precise steps one would need to take to achieve the goal of compromising the target resource. Furthermore, attack trees provide an excellent resource for collaboration and brainstorming over potential attacks, enabling professionals with varying areas of expertise to work together. However, attack trees have significant limitations as well. Although \cite{Schneier1999} saw them as reusable in similar scenarios, in practice reuse has not been easy. Attack trees are labeled with specific steps to achieve a particular goal in a given scenario; with that level of concreteness, it is difficult to adapt one attack tree for multiple situations. In a similar vein, their specificity makes attack tree construction laborious and time-consuming, and the same goes for attack tree analysis. Furthermore, as purely graphical models, it is difficult to determine properties of attack trees such as equivalence or hierarchy without significant effort \cite{1652085}. Also, as static models attack trees do not capture the effect of timing on vulnerabilities \cite{Pudar:2009:PPM:2639527.2639705}, and also do not permit simulation testing.  
+\section{Petri-Nets}
+Attack trees are a valuable but limited resource for cybersecurity analysis. To address their limitations while retaining their strengths, researchers have established a correspondence between attack trees and Petri nets, which are graphical and mathematical process models. With the addition of mathematical modeling, Petri nets gain significant power both in representation and in analysis. Petri nets are powerful models for processes in many different areas, because they can capture key elements of processes and facilitate reasoning about them. Petri nets help to visualize the dynamics of a system, and support that visualization with mathematical definitions, analysis, and proof. There are many varieties of Petri nets to support many different uses, but the basic Petri net is a structure composed of places and transitions, with arcs between them that capture possible flows or paths through the net. McDermott  \cite{McDermott:2001:ANP:366173.366183} was the first to explore the correspondence between attack trees and Petri nets, modeling the states of the system as places, and actions or events that cause a change in state as transitions. He describes the attack net approach as contributing several strengths to penetration testing: modeling concurrency and the current state of an attack with tokens, showing intermediate goals more clearly as places, and showing the cumulative effects of different avenues of attack on the whole system. 
+\par While there is widespread agreement that attack trees can be usefully reformulated as Petri nets, there is little consensus about how this process should be done. \todoBA{substantiate this claim with citations} Without a standard conversion algorithm, the representation of attack trees as Petri nets will fall victim to many of the same weaknesses already applying to attack trees, especially regarding the labor required and the potential for human error. To help address this, we have developed a type of Petri net that can be built in manageable pieces and then chained together to form ever-larger structures, until the entire attack tree is represented. Aside from the chainability of this new kind of Petri net, we have also developed connectives that capture the AND and OR often used in attack trees, as well as other connectives that will likely be useful in capturing the interaction of sub-goals to achieve a larger goal. Let us begin by formally defining a Petri net. 
 \begin{definition}
   \label{def:Original-Petri-Net}
 A \textbf{Petri net}, $(P, T, F)$, consists of the following structure:  
@@ -9,9 +14,9 @@ A \textbf{Petri net}, $(P, T, F)$, consists of the following structure:
   \end{itemize}
 \end{definition}
 The places track progress through the net by means of markers called tokens, while the transitions enable progress to be made. If a transition has two input places, both inputs must be active (contain tokens) in order for the transition to fire. Similarly, if a transition has two output places, both places will become active once the transition has fired. The transitions consume tokens from their input places and produce tokens in their output places each time their input conditions are satisfied. The input/output relation is captured in $F$, the causal dependency or flow relation. 
-\section{Petri Nets Categorically}
+\section{Petri Nets as Monoids}
 As established in \cite{MESEGUER1990105}, Petri nets are monoids. Monoids are structures with objects and an associative binary relation with an identity element. In the case of Petri nets, they are monoids in a twofold way because they are composed of two kinds of things - places and transitions. Multiset union forms a monoid over the places of a Petri net, while composition forms a monoid over the transitions, with the empty set as the identity element for both. Viewing Petri nets through this lens allowed us to reason about them more abstractly, and to build complex nets out of simple building blocks using connectives we define. 
-The fact that the places of a Petri net form a free commutative monoid is crucial to our development of these connectives. 
+The fact that the places of a Petri net form a free commutative monoid is crucial to our development of these connectives, because it gives us a way to gather together a set of places to hold tokens that mark our progress through the net. From there, we can define morphisms to allow the tokens to progress in a defined way. The free commutative monoid is built upon the notion of a finite multiset, as the definitions below make clear. 
 \begin{definition}
   \label{def:Finite-Multiset}
   A \textbf{finite multiset} over a set $S$ can be defined as a formal
@@ -33,8 +38,19 @@ The fact that the places of a Petri net form a free commutative monoid is crucia
   operation is the formal sum of multisets, and the monoidal unit is
   $\emptyset$.
 \end{definition}
+Petri nets are monoids, so their morphisms can be specified by defining a monoid homomorphism.
+\begin{definition}
+  \label{Monoid-Homomorphism}
+  A \textbf{monoid homomorphism} between two monoids $(M_1, \oplus_1, 0_1)$ and $(M_2, \oplus_2, 0_2)$
+  is a function $f: M_1 \to M_2$ such that:
+  \begin{itemize}
+  \item $f(a_1 \oplus_1 a_2) = f(a_1) \oplus f(a_2)$
+  \item $f (0_1) = 0_2$
+  \end{itemize}
+\end{definition}
 %
-Petri nets fit more generally into the category of graphs.
+\section{Petri Nets as Graphs}
+Petri nets fit more generally into the category of graphs, in that Petri net places correspond to nodes and the transitions correspond to edges or paths between nodes. Viewing Petri nets this way helps us in our understanding of the Petri net category. Let us begin to show this correspondence by first defining the category of graphs. 
 \begin{definition}
   \label{def:Graph}
   A \textbf{generalized graph}, $(V, T, \mathsf{src}, \mathsf{tar}, \_^*,I,\otimes)$, consists of the following structure:
@@ -47,7 +63,8 @@ Petri nets fit more generally into the category of graphs.
   \item A target function $\mathsf{tar} : T \to V^*$.
   \end{itemize}
 \end{definition}
-%
+% 
+Taking the graphs as objects, we can define morphisms between them to complete the definition of the category of graphs. \todoBA{is this shifting up a level from the previous definition of graph?} 
 \begin{definition}
   \label{def:Graph-Morphism}
   A \textbf{graph morphism}, $h : G \to G'$, between graphs is a pair $(f, g)$ where:
@@ -56,17 +73,7 @@ Petri nets fit more generally into the category of graphs.
   \item $g: V \to V'$ is a function.
   \end{itemize}
 \end{definition}
-
-\begin{definition}
-  \label{Monoid-Homomorphism}
-  A \textbf{monoid homomorphism} between two monoids $(M_1, \oplus_1, 0_1)$ and $(M_2, \oplus_2, 0_2)$
-  is a function $f: M_1 \to M_2$ such that:
-  \begin{itemize}
-  \item $f(a_1 \oplus_1 a_2) = f(a_1) \oplus f(a_2)$
-  \item $f (0_1) = 0_2$
-  \end{itemize}
-\end{definition}
-
+Thus, bringing in the definition of graph and monoid homomorphisms, we can define a Petri net morphism.
 \begin{definition}
   \label{Petri-net-morphism}
   A \textbf{generalized graph morphism} between two generalized graphs\\
@@ -75,7 +82,7 @@ Petri nets fit more generally into the category of graphs.
   $(f, g)$ where $f : T_1 \to T_2$ is a function and
   $g: V_1^{*_1} \to V_2^{*_2}$ is a monoid homomorphism.
 \end{definition}
-
+Now we have a complete categorical definition of Petri nets.
 %
 \begin{definition}
   \label{def:Petri-Net}
@@ -88,28 +95,11 @@ Petri nets fit more generally into the category of graphs.
 We will denote a Petri net $(S, T, \mathsf{src},
 \mathsf{tar},\_^{\oplus},\emptyset,\oplus)$ by the pair $(S^\oplus,T)$ for
 readability. Also, for $t \in T$ such that $\mathsf{src(t)} = s_A$ and $\mathsf{tar(t)} = s_B$, we will use the notation $t : s_A \rightarrow s_B$ for clarity and conciseness. 
-%%\todoHE{Please be consistent with denoting Peti nets.  For example, see the next lemma.}
-%
-%\begin{definition}
-%  \label{def:Marked-Petri-Net}
-%  A \textbf{marked Petri net}, $(P, T, \mathsf{src}, \mathsf{tar}, M_0)$, is an ordinary Petri net with an additional feature:
-%  \begin{itemize}
-%  \item An initial marking $M_0 \in P^\oplus$ where $M_0$ is of the form $a_1 \oplus ... \oplus a_j$, with no multiplicities 
-%  \end{itemize}
-%\end{definition}
-%\begin{definition}
- % \label{place-transition-petri-net}
-%  A \textbf{place-transition Petri net} is a graph, $(T, S^\oplus)$ where 
-%  \begin{itemize}
-% \item T is the set of transitions,
-%\item S is the set of places.
-%\item The elements of $S^\oplus$ model the marking required for a transition to fire at a particular place.
-%  \end{itemize}
-%\end{definition}
-%
-%
+
 Thus, take as objects Petri nets $(S^\oplus, T)$ and as morphisms Petri net morphisms. This defines a category Petri.
 \begin{lemma}
+\section{Isomorphism of FCM's Product and Coproduct} 
+In order to define the connectives for Petri nets categorically, we need to first establish that the product and the coproduct of free commutative monoids are isomorphic. This will enable us to gather the elements of the net together in equivalent ways so that our connectives add to the structure or flow of the net as it already exists, non-destructively. 
 Suppose we have two Petri nets, $(S_1^\oplus, T_1)$ and $(S_2^\oplus, T_2)$.\\ 
 \[(S_1 ^\oplus \times S_2 ^\oplus) \cong (S_1 + S_2)^\oplus\]
 \begin{proof}
@@ -178,6 +168,9 @@ Since $(S_1 ^\oplus \times S_2 ^\oplus) \leftrightarrow (S_1 + S_2)^\oplus$, we 
 %
 \end{lemma}
 %
+\section{Representing Attack Trees as Petri Nets}
+\section{Chainable Petri Nets}
+So far, we have explored the category of Petri nets, its monoidal characteristics, and its relation to the category of graphs. In our exploration of the category of Petri nets, we have exposed key characteristics of the free commutative monoid over the places and transitions. The isomorphism between the product and coproduct of the free commutative monoid gives us the ability to connect Petri nets using these operations. This is crucial to our efforts to translate attack trees into Petri nets because it defines an important part of how Petri nets can be combined. However, in order to focus on the connectives, we first need to make sure that the pieces we are joining together will not be impacted by the connection. This ensures that whatever patterns already built into a net will not be altered by making that net part of a larger net. By isolating each part this way, we make it possible to build a complex net out of simple parts. We achieve this isolation by distinguishing two transitions and two places for each Petri net. These elements mark the start and end of the net, so that one net can be joined to another like so many garden hoses or extension cords.  
 \begin{definition}
   \label{Chainable-Petri-Net}
   A \textbf{chainable Petri net}, $(S^\oplus, T, i, f, start, end)$ is a Petri net with the following additional features: 
@@ -189,7 +182,7 @@ Since $(S_1 ^\oplus \times S_2 ^\oplus) \leftrightarrow (S_1 + S_2)^\oplus$, we 
    \item Morphisms for chainable nets must preserve both $start$ and $end$, and their associated sets of places $i$ and $f$. So, a morphism $<a,b>: (N, start, end) \to (N', start', end')$ is an ordinary net morphism that preserves the markings $b(start) = start'$ and $b(end) = end'$.\todoBA{does the preservation of i and f need to be explicit or is it implied already? And, do the morphisms make sense now that these things are sets instead of individual things?} 
  \end{itemize}
 \end{definition}
-The chainable petri net, or CNET, is a petri net that tracks both its initial and its final places, to facilitate chaining the petri net together with other petri nets at either end. This enables the use of operators such as OR, SEQ, \& AND.\\
+Making Petri nets chainable in this way ensures that\todoBA{did we make monads here?} the internal structure of component Petri nets remains untouched. For example, if we have two Petri nets and we want to join them together in sequence, we want to make sure that the first net starts and finishes, and then the next net starts and finishes. We do not want the nets to make progress concurrently, or for the second one to go first. Since we have distinguished the start and end of each component, we can define the sequential connective so that it starts with the start of the first, and finishes with the end of the second. Then, we simply join the end of the first with the beginning of the second, and we have the behavior we want. There is no need to concern ourselves with what goes on inside each component because the flow relation specific to that component will govern progress through it, and the component places and transitions are not disturbed by joining with another net since the join happens only at the start and/or end. Thus, by distinguishing the start and end of each component, we can more easily and reliably define the behavior of the nets when they are joined by some connective. The chainable petri net, or CNET, tracks both its initial and its final places to facilitate chaining the Petri net together with other Petri nets at either end. This enables the use of operators such as OR, SEQ, \& AND.\\
 \begin{example}
   \label{ex:SEQ-PN}
 First let us look at a simple operation, the sequential ordering (SEQ) of two Petri nets. This is a common operation that requires one task to be completed before another. This means that the operation cannot be commutative, since the order matters. In a simple Petri net, this is modeled graphically as two (or more) places arranged along a non-branching line. Clearly in such an arrangement the first place must be activated in order to activate the second place, and so on. Only when the last node is activated has the SEQ operation completed.    

@@ -16,7 +16,7 @@ A \textbf{Petri net}, $(P, T, F)$, consists of the following structure:
 The places track progress through the net by means of markers called tokens, while the transitions enable progress to be made. If a transition has two input places, both inputs must be active (contain tokens) in order for the transition to fire. Similarly, if a transition has two output places, both places will become active once the transition has fired. The transitions consume tokens from their input places and produce tokens in their output places each time their input conditions are satisfied. The input/output relation is captured in $F$, the causal dependency or flow relation. 
 \section{Petri Nets as Monoids}
 As established in \cite{MESEGUER1990105}, Petri nets are monoids. Monoids are structures with objects and an associative binary relation with an identity element. In the case of Petri nets, they are monoids in a twofold way because they are composed of two kinds of things - places and transitions. Multiset union forms a monoid over the places of a Petri net, while composition forms a monoid over the transitions, with the empty set as the identity element for both. Viewing Petri nets through this lens allowed us to reason about them more abstractly, and to build complex nets out of simple building blocks using connectives we define. 
-The fact that the places of a Petri net form a free commutative monoid is crucial to our development of these connectives, because it gives us a way to gather together a set of places to hold tokens that mark our progress through the net. From there, we can define morphisms to allow the tokens to progress in a defined way. The free commutative monoid is built upon the notion of a finite multiset, as the definitions below make clear. 
+The fact that the places and transitions of a Petri net form free commutative monoids is crucial to our development of these connectives, because it gives us a way to gather these elements together and sort them out again. From there, we can define morphisms to structure the connections between two nets without altering them. The free commutative monoid is built upon the notion of a finite multiset, as the definitions below make clear. 
 \begin{definition}
   \label{def:Finite-Multiset}
   A \textbf{finite multiset} over a set $S$ can be defined as a formal
@@ -97,9 +97,10 @@ We will denote a Petri net $(S, T, \mathsf{src},
 readability. Also, for $t \in T$ such that $\mathsf{src(t)} = s_A$ and $\mathsf{tar(t)} = s_B$, we will use the notation $t : s_A \rightarrow s_B$ for clarity and conciseness. 
 
 Thus, take as objects Petri nets $(S^\oplus, T)$ and as morphisms Petri net morphisms. This defines a category Petri.
-\begin{lemma}
+
 \section{Isomorphism of FCM's Product and Coproduct} 
 In order to define the connectives for Petri nets categorically, we need to first establish that the product and the coproduct of free commutative monoids are isomorphic. This will enable us to gather the elements of the net together in equivalent ways so that our connectives add to the structure or flow of the net as it already exists, non-destructively. 
+\begin{lemma}
 Suppose we have two Petri nets, $(S_1^\oplus, T_1)$ and $(S_2^\oplus, T_2)$.\\ 
 \[(S_1 ^\oplus \times S_2 ^\oplus) \cong (S_1 + S_2)^\oplus\]
 \begin{proof}
@@ -170,7 +171,7 @@ Since $(S_1 ^\oplus \times S_2 ^\oplus) \leftrightarrow (S_1 + S_2)^\oplus$, we 
 %
 \section{Representing Attack Trees as Petri Nets}
 \section{Chainable Petri Nets}
-So far, we have explored the category of Petri nets, its monoidal characteristics, and its relation to the category of graphs. In our exploration of the category of Petri nets, we have exposed key characteristics of the free commutative monoid over the places and transitions. The isomorphism between the product and coproduct of the free commutative monoid gives us the ability to connect Petri nets using these operations. This is crucial to our efforts to translate attack trees into Petri nets because it defines an important part of how Petri nets can be combined. However, in order to focus on the connectives, we first need to make sure that the pieces we are joining together will not be changed internally by the connection. This ensures that whatever patterns already built into a net will not be altered by making that net part of a larger net. By isolating each part this way, we make it possible to build a complex net out of simple parts. We achieve this isolation by distinguishing two transitions and two places for each Petri net. These elements mark the start and end of the net, so that one net can be joined to another like so many garden hoses or extension cords. This net pattern has been used in process modeling, where it is known as a workflow net. 
+So far, we have explored the category of Petri nets, its monoidal characteristics, and its relation to the category of graphs. In our exploration of the category of Petri nets, we have exposed key characteristics of the free commutative monoid over the places and transitions. The isomorphism between the product and coproduct of the free commutative monoid gives us the ability to connect Petri nets using these operations. This is crucial to our efforts to translate attack trees into Petri nets because it defines an important part of how Petri nets can be combined. However, in order to focus on the connectives, we first need to make sure that the pieces we are joining together will not be changed internally by the connection. This ensures that whatever patterns already built into a net will not be altered by making that net part of a larger net. By isolating each part this way, we make it possible to build a complex net out of simple parts. We achieve this isolation by distinguishing two transitions and two places for each Petri net. These elements mark the start and end of the net, so that one net can be joined to another like so many garden hoses or extension cords. This net pattern has also been used in process modeling, where it is known as a workflow net. 
 \begin{definition}
   \label{Chainable-Petri-Net}
   A \textbf{chainable Petri net}, $(S^\oplus, T, i, f, start, end)$ is a Petri net with the following additional features: 
@@ -569,70 +570,69 @@ Thus, $g;f = Id$. Likewise,\\
 Thus, $f;g = Id$, and $((A \times B)\times C) \cong (A \times (B\times C))$
 \end{proof}
 
-*** Note this in introduction. Also look up symmetric monoidal category for monoidal tensor product not just tensor product. ***
-\newpage
-Example nets:
+%\newpage
+%Example nets:
+%%
+%K = \\
+%$S_K :\{ a, b, c\}$\\
+%$T_K :\{t\}$\\  
+%$F_K (a, t) = 2$\\
+%$F_K (b, t) = 1$\\
+%$F_K (t, c) = 2$\\
+%$F_K (else) = 0$\\
+%%
+%$S_K^\oplus :\{ 2a \oplus 1b \oplus 2c\}$\\
+%$t = \{ 2a \oplus 1b \to 2c \}$\\  
+%$\delta_{0K} (t) = 2a \oplus 1b \}$\\
+%$\delta_{1K} (t) = 2c \}$\\
+%\smallskip
+%M = \\
+%$S_M :\{d,e\}$\\
+%$T_M :\{t'\}$\\  
+%$F_M (d, t') = 2$\\
+%$F_M (t', e) = 1$\\
+%$F_M (else) = 0$\\
+%%
+%$S_M^\oplus :\{ 2d \oplus 1e\}$\\
+%$t = \{ 2d \to 1e \}$\\  
+%$\delta_{0M} (t') = 2d \}$\\
+%$\delta_{1M} (t') = 1e \}$\\
+%\smallskip
+%$S_K^\oplus \times S_M^\oplus = (2a \oplus 1b, 2d) \to (2c, 1e)$\\
+%\smallskip
+%$(S_K + S_M)^\oplus = (\{1\} \times S_K) \cup (\{2\} \times S_M)^\oplus$\\
+%$((1, 2a), (1, 1b), (2, 2d))^\oplus = $\\
+%$S_{KM}^\oplus: \{(1, 2a), (1, 1b), (2, 2d) \}$\\
+%$T_{KM}: \{t_1, t_2\}$\\
+%$t_1 = ((1, 2a) \oplus (1, 1b)) \to (1, 2c)$\\
+%$t_2 = (2, 2d) \to (2, 1e)$\\
+%$\delta_{0KM} (t_1) = (1, 2a) \oplus (1, 1b) \}$\\
+%$\delta_{0KM} (t_2) = (2, 2d) \}$\\
+%$\delta_{1KM} (t_1) = (1, 2c) \}$\\
+%$\delta_{1KM} (t_2) = (2, 1e) \}$\\
+%\smallskip
+%$(S_1 ^\oplus \times S_2 ^\oplus)$ and $(S_1 + S_2)^\oplus$ are isomorphic. \\
+%Suppose there are two Petri nets $S_1 and S_2$, with sets of places $M_1 and M_2$ and sets of arcs $T_1 and T_2.$\\
+%Let F be the homomorphism from $(S_1 + S_2)^\oplus$ to $(S_1 ^\oplus \times S_2 ^\oplus)$. \\
+%$F((S_1 + S_2)^\oplus) = (S_1 ^\oplus + S_2 ^\oplus)$\\
+%where $S_1 + S_2 = (\{1\} \times S_1) \cup (\{2\} \times S_2)$\\
+%For F:\\
+%Calculating the set of places of the codomain:\\
+%  $S_1 =  \bigcup_{ y \in domain (x, y)} | x=1)$\\
+%  $S_2 =  \bigcup_{y \in domain (x, y)} | x=2)$\\
+%Note: I mean to separate out the two sets using the disjoint markers here.\\
+%The set of places of the codomain = $(S_1 ^\oplus \times S_2 ^\oplus)$\\
+%The arrows of the codomain maintain the structure defined in the domain, disregarding the origin markers \{1\} and \{2\} added in by taking the disjoint union.\\
+%Since the function preserves the structure between the objects, only changing the names of the objects, this is a homomorphism.\\
+%Now, let G be the homomorphism from $(S_1 ^\oplus \times S_2 ^\oplus)$ to $(S_1 + S_2)^\oplus$. \\
+%The objects or places of the codomain are the objects of the domain modified in the following way:\\
+%where objects in the domain have the form $(x, y), (\{1\} \times x) \cup (\{2\} \times y).$\\
+%The arrows of the codomain maintain the structure of the domain, adding in origin markers \{1\} and \{2\} by position as described above.\\
+%Since G preserves the group's structure and only modifies objects' names, it is a homomorphism. 
+%Clearly,$ G \circ F = F \circ G,$ since F removes the origin markings  \{1\} and \{2\} and G puts them back. Structure remains unchanged in either direction.\\
+%\newpage
 %
-K = \\
-$S_K :\{ a, b, c\}$\\
-$T_K :\{t\}$\\  
-$F_K (a, t) = 2$\\
-$F_K (b, t) = 1$\\
-$F_K (t, c) = 2$\\
-$F_K (else) = 0$\\
-%
-$S_K^\oplus :\{ 2a \oplus 1b \oplus 2c\}$\\
-$t = \{ 2a \oplus 1b \to 2c \}$\\  
-$\delta_{0K} (t) = 2a \oplus 1b \}$\\
-$\delta_{1K} (t) = 2c \}$\\
-\smallskip
-M = \\
-$S_M :\{d,e\}$\\
-$T_M :\{t'\}$\\  
-$F_M (d, t') = 2$\\
-$F_M (t', e) = 1$\\
-$F_M (else) = 0$\\
-%
-$S_M^\oplus :\{ 2d \oplus 1e\}$\\
-$t = \{ 2d \to 1e \}$\\  
-$\delta_{0M} (t') = 2d \}$\\
-$\delta_{1M} (t') = 1e \}$\\
-\smallskip
-$S_K^\oplus \times S_M^\oplus = (2a \oplus 1b, 2d) \to (2c, 1e)$\\
-\smallskip
-$(S_K + S_M)^\oplus = (\{1\} \times S_K) \cup (\{2\} \times S_M)^\oplus$\\
-$((1, 2a), (1, 1b), (2, 2d))^\oplus = $\\
-$S_{KM}^\oplus: \{(1, 2a), (1, 1b), (2, 2d) \}$\\
-$T_{KM}: \{t_1, t_2\}$\\
-$t_1 = ((1, 2a) \oplus (1, 1b)) \to (1, 2c)$\\
-$t_2 = (2, 2d) \to (2, 1e)$\\
-$\delta_{0KM} (t_1) = (1, 2a) \oplus (1, 1b) \}$\\
-$\delta_{0KM} (t_2) = (2, 2d) \}$\\
-$\delta_{1KM} (t_1) = (1, 2c) \}$\\
-$\delta_{1KM} (t_2) = (2, 1e) \}$\\
-\smallskip
-$(S_1 ^\oplus \times S_2 ^\oplus)$ and $(S_1 + S_2)^\oplus$ are isomorphic. \\
-Suppose there are two Petri nets $S_1 and S_2$, with sets of places $M_1 and M_2$ and sets of arcs $T_1 and T_2.$\\
-Let F be the homomorphism from $(S_1 + S_2)^\oplus$ to $(S_1 ^\oplus \times S_2 ^\oplus)$. \\
-$F((S_1 + S_2)^\oplus) = (S_1 ^\oplus + S_2 ^\oplus)$\\
-where $S_1 + S_2 = (\{1\} \times S_1) \cup (\{2\} \times S_2)$\\
-For F:\\
-Calculating the set of places of the codomain:\\
-  $S_1 =  \bigcup_{ y \in domain (x, y)} | x=1)$\\
-  $S_2 =  \bigcup_{y \in domain (x, y)} | x=2)$\\
-Note: I mean to separate out the two sets using the disjoint markers here.\\
-The set of places of the codomain = $(S_1 ^\oplus \times S_2 ^\oplus)$\\
-The arrows of the codomain maintain the structure defined in the domain, disregarding the origin markers \{1\} and \{2\} added in by taking the disjoint union.\\
-Since the function preserves the structure between the objects, only changing the names of the objects, this is a homomorphism.\\
-Now, let G be the homomorphism from $(S_1 ^\oplus \times S_2 ^\oplus)$ to $(S_1 + S_2)^\oplus$. \\
-The objects or places of the codomain are the objects of the domain modified in the following way:\\
-where objects in the domain have the form $(x, y), (\{1\} \times x) \cup (\{2\} \times y).$\\
-The arrows of the codomain maintain the structure of the domain, adding in origin markers \{1\} and \{2\} by position as described above.\\
-Since G preserves the group's structure and only modifies objects' names, it is a homomorphism. 
-Clearly,$ G \circ F = F \circ G,$ since F removes the origin markings  \{1\} and \{2\} and G puts them back. Structure remains unchanged in either direction.\\
-\newpage
-
-% subsection MeseguerMontanari (end)
+%% subsection MeseguerMontanari (end)
 
 
 
